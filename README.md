@@ -20,6 +20,6 @@ Read the full Easyplume documentation and methodology at:
 
 -Sphinx online documentation:[![Sphinx](https://img.shields.io/badge/Sphinx-Easyplume-blue.svg)](https://github.com/Pabsm94/EasyPlume/blob/master/LICENSE) 
 
--Final degree dissertation project: [![PDF](https://img.shields.io/badge/PDF-Easyplume-blue.svg)](https://github.com/Pabsm94/EasyPlume/blob/master/documentation/TFG_22052017_MMM_comments.pdf).
+-Final degree dissertation project: [![PDF](https://img.shields.io/badge/PDF-Easyplume-blue.svg)](https://github.com/Pabsm94/EasyPlume/blob/master/Documentation/TFG_22052017_MMM_comments.pdf).
 
 Easyplume is compatible with: __Python 2.7-3.5__.
