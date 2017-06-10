@@ -1,6 +1,6 @@
 # Easyplume: Implementation and Characterization of Plasma Plume Expansions for Python
 
-[![license](https://img.shields.io/github/license/mashape/apistatus.svg?maxAge=2592000)](https://github.com/Pabsm94/EasyPlume/blob/master/LICENSE) 
+[![license](https://img.shields.io/github/license/mashape/apistatus.svg?maxAge=2592000)](https://github.com/Pabsm94/EasyPlume/blob/master/LICENSE) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.805730.svg)](https://doi.org/10.5281/zenodo.805730)
 
 ## Welcome to Easyplume
 
