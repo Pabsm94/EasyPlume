@@ -1,0 +1,1020 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Python Plume Code Documentation &mdash; HyperPlume 1.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="HyperPlume 1.0.0 documentation" href="index.html" />
+    <link rel="next" title="Plume Expansion Code Tutorials" href="Simulations.html" />
+    <link rel="prev" title="Understanding Plume Expansions" href="Theory.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="Simulations.html" title="Plume Expansion Code Tutorials"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="Theory.html" title="Understanding Plume Expansions"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">HyperPlume 1.0.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="python-plume-code-documentation">
+<h1>Python Plume Code Documentation<a class="headerlink" href="#python-plume-code-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="general-structure-of-code-suite">
+<h2>General structure of Code suite<a class="headerlink" href="#general-structure-of-code-suite" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="hiperplume-parent-class-and-methods">
+<h2>HIPERPLUME parent class and methods<a class="headerlink" href="#hiperplume-parent-class-and-methods" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Hyperplume</span><span class="p">():</span>
+
+	<span class="sd">&quot;&quot;&quot; Parent class Hyperplume loads target plasma and defines common attributes as well as shared methods in the AEM and SSM plume classes&quot;&quot;&quot;</span>
+    
+    <span class="k">def</span> <span class="nf">solver</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        
+        <span class="sd">&quot;&quot;&quot;Solver Abstract Method to be particularised by each Plume code. It is only defined for structure purposes in parent class Hyperplume&quot;&quot;&quot;</span>
+        
+    <span class="k">def</span> <span class="nf">query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">z</span><span class="p">,</span><span class="n">r</span><span class="p">):</span>
+        
+        <span class="sd">&quot;&quot;&quot;Query abstract method returns plasma profile data at specified grid points. query method is to be particularised by each plume code.It is only defined forstructure purposes in parent class Hyperplume&quot;&quot;&quot;</span>
+         
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">plasma</span><span class="p">,</span><span class="n">z_span</span><span class="p">,</span><span class="n">r_span</span><span class="p">,</span><span class="n">n_init</span><span class="p">):</span>
+        
+        <span class="sd">&quot;&quot;&quot; plume_constructor loads common class properties for AEM and SSM plume classes </span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            :plasma (dict): simple_plasma object dictionary containing basic plasma parameters.</span>
+<span class="sd">            :z_span (numpy.ndarray): axial region where the problem will be integrated.</span>
+<span class="sd">            :r_span (numpy.ndarray): initial far-field plasma radial profile.</span>
+<span class="sd">            :n_init (numpy.ndarray): initial dimensional density front.</span>
+<span class="sd">        		</span>
+<span class="sd">        Usage:</span>
+<span class="sd">            &gt;&gt;&gt; Plasma = {&#39;Electrons&#39;: {&#39;Gamma&#39;: 1,&#39;T_0_electron&#39;: 2.1801714e-19,&#39;q_electron&#39;: -1.6e-19},&#39;Ions&#39;: {&#39;mass_ion&#39;: 2.1801714e-25, &#39;q_ion&#39;: 1.6e-19}}</span>
+<span class="sd">            &gt;&gt;&gt; z_span = np.linspace(0,100,100)</span>
+<span class="sd">            &gt;&gt;&gt; r0 = np.linspace(0,3,100)</span>
+<span class="sd">            &gt;&gt;&gt; n0 = np.exp(-6.15/2*r_span**2)</span>
+<span class="sd">            &gt;&gt;&gt; Plume = Hyperplume(Plasma,z_span,r0,n0)</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+        
+      
+    <span class="k">def</span> <span class="nf">simple_plasma</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">charge</span><span class="p">,</span><span class="n">ion_mass</span><span class="p">,</span><span class="n">init_plasma_temp</span><span class="p">,</span><span class="n">Gamma</span><span class="p">):</span>
+        
+        <span class="sd">&quot;&quot;&quot; Method simple_plasma allows the user to quickly create a Plasma dictionary with two particle species (ions and electrons), </span>
+<span class="sd">        and well defined attributes.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            :charge (float): Electron charge given dimensional in units [C]</span>
+<span class="sd">            :ion_mass (float): Ion mass given in dimensional units [Kg]</span>
+<span class="sd">            :init_plasma_temp (float): Initial plasma temperature given in dimensional units [J]</span>
+<span class="sd">            :Gamma (int or float): Dimensionless thermal expansion constant. Must be inside isothermal and polytropic boundaries [1,5/3]</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            :plasma (dict): Dictionary containing two simple plasma species (ions and electrons) with the before mentioned</span>
+<span class="sd">                       	   properties stored in favorable form.</span>
+<span class="sd">        Usage:             </span>
+<span class="sd">            &gt;&gt;&gt; Plasma = Hyperplume().simple_plasma(charge=1.6e-19,</span>
+<span class="sd">		ion_mass=2.1801714e-25,,init_plasma_temp=2.1801714e-19,Gamma=1)</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+            
+        
+        
+    <span class="k">def</span> <span class="nf">temp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">n</span><span class="p">,</span><span class="n">n_0</span><span class="p">,</span><span class="n">T_0</span><span class="p">,</span><span class="n">Gamma</span><span class="p">):</span>
+        
+        <span class="sd">&quot;&quot;&quot; Method temp calculates plasma temperature  as function of plasma density.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            :n (int or np.ndarray): plasma density at specific (z,r) location in the plume grid	</span>
+<span class="sd">            :n_0 (int):Iinitial density of plasma</span>
+<span class="sd">            :T_0 (float): Initial temperature of plasma</span>
+<span class="sd">            :Gamma (int): Dimensionless thermal expansion constant</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            :T (float or np.ndarray): Temperature of plasma at targeted (z,r) grid points in plume</span>
+<span class="sd">            </span>
+<span class="sd">        Usage:</span>
+<span class="sd">            &gt;&gt;&gt; T = Hyperplume().temp(n=0.65,n_0=1,T_0=2.1801714e-19,Gamma=1)</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+        
+            
+    <span class="k">def</span> <span class="nf">phi</span> <span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">n</span><span class="p">,</span><span class="n">n_0</span><span class="p">,</span><span class="n">T_0</span><span class="p">,</span><span class="n">Gamma</span><span class="p">,</span><span class="n">e_charge</span><span class="p">):</span>
+        
+        <span class="sd">&quot;&quot;&quot;Method phi calculates electric potential as function of plasma density.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">	    :n(int or np.ndarray): plasma density at specific (z,r) location in the plume grid</span>
+<span class="sd">            :n_0 (int):Iinitial density of plasma</span>
+<span class="sd">            :T_0 (float): Initial temperature of plasma</span>
+<span class="sd">            :Gamma (int): Dimensionless thermal expansion constant</span>
+<span class="sd">            :e_charge (float):Electron charge</span>
+<span class="sd">             </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            :phi(float or np.ndarray): Electric potential of plasma at (z,r) targeted grid point</span>
+<span class="sd">             </span>
+<span class="sd">        Usage:</span>
+<span class="sd">             &gt;&gt;&gt; phi = Hyperplume().phi(n=0.65,n_0=1,T_0=2.1801714e-19,</span>
+<span class="sd">	         Gamma=1,e_charge=-1.6e-19)</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+             
+         
+        
+    <span class="k">def</span> <span class="nf">n</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">n_0</span><span class="p">,</span><span class="n">T_0</span><span class="p">,</span><span class="n">phi</span><span class="p">,</span><span class="n">Gamma</span><span class="p">,</span><span class="n">e_charge</span><span class="p">):</span>
+        
+        <span class="sd">&quot;&quot;&quot;Method n calculates plasma density as function of plasma potential. </span>
+<span class="sd">        </span>
+<span class="sd">         Args:</span>
+<span class="sd">            :n_0 (int):Iinitial density of plasma</span>
+<span class="sd">            :T_0 (float): Initial temperature of plasma</span>
+<span class="sd">            :Gamma (int): Dimensionless thermal expansion constant</span>
+<span class="sd">            </span>
+<span class="sd">            :e_charge (float):Electron charge</span>
+<span class="sd">         Returns:</span>
+<span class="sd">            :n (float or numpy.ndarray): Pasma density at (z,r) targeted grid point in the plume.</span>
+<span class="sd">             </span>
+<span class="sd">         Usage:</span>
+<span class="sd">             &gt;&gt;&gt; n = Hyperplume.n(n_0=1,T_0=2.1801714e-19,phi=-5.7</span>
+<span class="sd">	         Gamma=1,e_charge=-1.6e-19)</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+         
+        
+    <span class="k">def</span> <span class="nf">eta_deriver</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">):</span>
+        
+        <span class="sd">&quot;&quot;&quot;Method eta_derivar calculates the numerical derivatives of the variables along eta, with a central finite difference approach.</span>
+
+<span class="sd">        Args: </span>
+<span class="sd">            :x (np.ndarray): represents the derivative step (dx,dy)</span>
+<span class="sd">            :y (np.ndarray): vector to derive with respect to x</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            :y_prime (np.ndarray): derivative of y over x  stored in array format</span>
+<span class="sd">            </span>
+<span class="sd">        Usage:</span>
+<span class="sd">            &gt;&gt;&gt; x = np.array([0,0.5,1,1.2,2,2.3,2.6])</span>
+<span class="sd">            &gt;&gt;&gt; y = np.array([10,17,23,27,36,40,45])</span>
+<span class="sd">            &gt;&gt;&gt; dydx = Hyperplume.eta_deriver(x,y)</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+
+        
+    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">z</span><span class="p">,</span><span class="n">r</span><span class="p">,</span><span class="n">var_name</span><span class="p">,</span><span class="n">contour_levels</span><span class="p">):</span>
+        
+        <span class="sd">&quot;&quot;&quot; Hyperplume Class method to plot the contours of important plasma variables along the specified (z,r) plume grid points.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">        </span>
+<span class="sd">            :z (int,float, or np.ndarray): new interpolation axial region where plasma variabes are to be calculated and plotted. Must be inside z_grid limits</span>
+<span class="sd">            :r (int,float, or np.ndarray): new interpolation axial region where plasma variabes are to be calculated and plotted. Must be inside z_grid limits   </span>
+<span class="sd">            :var_name (str): string containing the name of the variable to be visualized. Options are:</span>
+<span class="sd">                            &#39;lnn&#39;: logarithm of plasma density </span>
+<span class="sd">                            &#39;u_z&#39;: axial plume velocity</span>
+<span class="sd">                            &#39;u_r&#39;:radial plume velocity</span>
+<span class="sd">                            &#39;T&#39;: plasmaTemperature</span>
+<span class="sd">                            &#39;phi&#39;:  ambipolar electric field</span>
+<span class="sd">                            &#39;eta&#39;: ion stream lines</span>
+<span class="sd">            contour_levels (array or of list): contour lables of plasma varialbled at the targets z,r points.</span>
+<span class="sd">            </span>
+<span class="sd">        Usage:</span>
+<span class="sd">            &gt;&gt;&gt; Plasma = Hyperplume().SIMPLE_plasma()</span>
+<span class="sd">            &gt;&gt;&gt; Plume = AEM()</span>
+<span class="sd">     	    &gt;&gt;&gt; Plume.plot(z=np.array([15,20,25,30]),r=np.array([20,25,30,35]),</span>
+<span class="sd">	        var_name=&#39;n&#39;,contour_levels=[0,1,2,3,4,5,6,7,8])</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="aem-class-and-methods">
+<h2>AEM class and methods<a class="headerlink" href="#aem-class-and-methods" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre>  
+
+<span class="k">class</span> <span class="nc">AEM</span><span class="p">(</span><span class="n">Hyperplume</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;Asymptotic Expansion Model of a plasma plume expansion.Class AEM inherits methods  from </span>
+<span class="sd">    parent class Hyperplume, and particularizes them.All initial inputs must be given in dimensional form.&quot;&quot;&quot;</span>
+    
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">plasma</span><span class="p">,</span><span class="n">z_span</span><span class="p">,</span><span class="n">r_span</span><span class="p">,</span><span class="n">n_init</span><span class="p">,</span><span class="n">uz_init</span><span class="p">,</span><span class="n">ur_init</span><span class="p">,</span><span class="n">sol_order</span><span class="p">):</span>
+        
+        <span class="sd">&quot;&quot;&quot; Class method __init__ is used as class constructor. Calls parent class Hyperplume constructor method __init__ to </span>
+<span class="sd">        store main plasma properties as attributes in the class.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            :plasma (dict): simple_plasma object dictionary containing basic plasma parameters.</span>
+<span class="sd">            :z_span (numpy.ndarray): axial region where the problem will be integrated.</span>
+<span class="sd">            :r_span (numpy.ndarray): initial far-field plasma radial profile.</span>
+<span class="sd">            :n_init (numpy.ndarray): initial far-field plum density front.</span>
+<span class="sd">            :uz_init (numpy.ndarray): initial far-region plume axial velocity profile</span>
+<span class="sd">            :ur_init (numpy.ndarray): initial fr-region plume radial velocity profile</span>
+<span class="sd">            :sol_order (int): Integer defining the AEM correction order for the plume integration.</span>
+<span class="sd">                            -0: AEM &quot;cold beam&quot; zeroth order solution</span>
+<span class="sd">                            -1: AEM first order correction</span>
+<span class="sd">                            -2: Second Order Correction</span>
+<span class="sd">                            </span>
+<span class="sd">        Usage:</span>
+<span class="sd">            &gt;&gt;&gt; e_charge,ion_mass = 1.6e-19 </span>
+<span class="sd">            &gt;&gt;&gt; Plasma_temp,gamma_value= 2.1801714e-25,2.1801714e-19,1</span>
+<span class="sd">            &gt;&gt;&gt; Plasma = Hyperplume().simple_plasma(e_charge,ion_mass,</span>
+<span class="sd">		Plasma_temp,gamma_value)</span>
+<span class="sd">            &gt;&gt;&gt; z_span = np.linspace(0,110,5000)</span>
+<span class="sd">            &gt;&gt;&gt; r_0 = np.linspace(0,10,5000) </span>
+<span class="sd">            &gt;&gt;&gt; n0 =  np.exp(-6.15/2 * r_0**2) </span>
+<span class="sd">            &gt;&gt;&gt; uz0,ur0  = np.linspace(20000,20000,100),np.linspace(0,40000,100) </span>
+<span class="sd">            &gt;&gt;&gt; AEM_Order = 2 # AEM model solution</span>
+<span class="sd">            &gt;&gt;&gt; PlumeAEM = AEM(Plasma,z_span,eta_0,n0,uz0,ur0,AEM_Order) </span>
+<span class="sd">        </span>
+<span class="sd">        Other important class attributes loaded in the AEM constructor are:</span>
+<span class="sd">            :d0 (numpy.ndarray): far field initial divergence ur0/uz0.</span>
+<span class="sd">            :d0p (numpy.ndarray): derivative of plume initial divergence</span>
+<span class="sd">            :eps (float): AEM expansion parameter 1/M_{0}^{2}</span>
+<span class="sd">            :uz0p (numpy.ndarray): derivative of initial far region axial velocity</span>
+<span class="sd">            :duz0p (numpy.ndarray): derivative of initial far region radial velocity</span>
+<span class="sd">            :z_grid,r_grid (numpy.ndarray): Plume grids where AEM problem is integrated</span>
+<span class="sd">            </span>
+<span class="sd">        To access these attributes, for instance:</span>
+<span class="sd">            &gt;&gt;&gt; print(PlumeAEM.d0)</span>
+<span class="sd">            &gt;&gt;&gt; print(PlumeAEM.eps)</span>
+
+<span class="sd">	&quot;&quot;&quot;</span>
+        
+
+<span class="k">def</span> <span class="nf">solver</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        
+        <span class="sd">&quot;&quot;&quot; Class method Solver integrates the AEM model equations in the specified plume grid. The method stores the different order</span>
+<span class="sd">        plasma properties in matrixes of size (mxn), where m,n are the number of z,r points,respectively.Porperties such as</span>
+<span class="sd">        density,temperature,electric field,etc are calculated and saved as attributes of the class in this matrix form.</span>
+<span class="sd">        </span>
+<span class="sd">        Usage:</span>
+<span class="sd">            &gt;&gt;&gt; PlumeAEM = AEM(Plasma,z_span,eta_0,n0,uz0,ur0,AEM_Order) #Creation of AEM plume</span>
+<span class="sd">            &gt;&gt;&gt; PlumeAEM.solver() # be sure to create a valid AEM plasma plume before applying the plume solver method</span>
+<span class="sd">        </span>
+<span class="sd">        Main Plume properties solved and saved by the method as class attributes:</span>
+<span class="sd">            :lnn (numpy.ndarray): 3-D matrix containing density values (logarithmic) for the three possible AEM solution orders.</span>
+<span class="sd">            :uz (numpy.ndarray): 3-D matrix containing axial velocity values for the three possible AEM solution orders.</span>
+<span class="sd">            :ur (numpy.ndarray): 3-D matrix containing radial velocity values for the three possible AEM solution orders.</span>
+<span class="sd">            :T (numpy.ndarray): 3-D matrix containing plasma Temperature values for the three possible AEM solution orders.</span>
+<span class="sd">            :phi (numpy.ndarray):3-D matrix containing plasma ambipolar electric field for the three possible AEM solution orders.</span>
+<span class="sd">            :div (numpy.ndarray): 3-D matrix containing plume divergence values for the three possible AEM solution orders.</span>
+<span class="sd">            :eta_ (int,numpy.ndarray): 3-D matrix containing ion current streamlines for the three possible AEM solution orders.</span>
+<span class="sd">       </span>
+<span class="sd">            &gt;&gt;&gt; PlumeAEM.lnn[0,:,:] # density values for Zeroth Order AEM</span>
+<span class="sd">            &gt;&gt;&gt; PlumeAEM.uz[1,:,:] # axial velocity First Order AEM </span>
+<span class="sd">            &gt;&gt;&gt; PlumeAEM.T[2,:,:] # Temperature values for Second Order AEM </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+<span class="k">def</span> <span class="nf">marching_solver</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">nsects</span><span class="p">):</span>
+        
+        <span class="sd">&quot;&quot;&quot;Marching schem AEM plume solver.AEM Class method marching_solver solves extends the AEM solution downstream by</span>
+<span class="sd">        reinitializing the method at each new calculated plasma plume front, (r0_front,z0_front,uz0_front,n0_front)</span>
+<span class="sd">        preventing excessive error growth in the calculations and widening the convergence region of thr AEM model.</span>
+<span class="sd">        </span>
+<span class="sd">        Marching_solver method reinitializes the plume initial parameter, with the values calculated in the previous </span>
+<span class="sd">        integration step, as many times as indicated by the user in nsects. It then solves the plume expansion incrementally</span>
+<span class="sd">        by callling the solver method multiple times.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">           :nsects (int): number of axial sections or steps (plume fronts), where solver reinitializes the</span>
+<span class="sd">                          model and integrates the solution agin.</span>
+<span class="sd">        Usage:</span>
+<span class="sd">            &gt;&gt;&gt; PlumeAEM = AEM(Plasma,z_span,eta_0,n0,uz0,ur0,AEM_Order) #Creation of AEM plume</span>
+<span class="sd">            &gt;&gt;&gt; Plume.marching_solver(nsects=100)</span>
+<span class="sd">            </span>
+<span class="sd">        Same Plasma attributes from standard solver can be accessed in Method marching_solver, but in this case the method stores only the </span>
+<span class="sd">        ith higher order correction specified by the user at plume creation with the input argument sol_order:</span>
+<span class="sd">        </span>
+<span class="sd">            :lnn (numpy.ndarray): matrix containing density values (logarithmic) for the selected AEM solution order.</span>
+<span class="sd">            :uz (numpy.ndarray): matrix containing axial velocity values for the selected AEM solution order.</span>
+<span class="sd">            :ur (numpy.ndarray): matrix containing radial velocity values for the selected AEM solution order.</span>
+<span class="sd">            :T (numpy.ndarray): matrix containing plasma Temperature values for the selected AEM solution order.</span>
+<span class="sd">            :phi (numpy.ndarray): matrix containing plasma ambipolar electric field for the selected AEM solution order.</span>
+<span class="sd">            :div (numpy.ndarray): matrix containing plume divergence values for the selected AEM solution order.</span>
+<span class="sd">            </span>
+<span class="sd">            &gt;&gt;&gt; PlumeAEM.lnn # density values for AEM ith order solution of plume expansion in the grid</span>
+<span class="sd">            &gt;&gt;&gt; PlumeAEM.uz # axial velocity for AEM ith order solution</span>
+<span class="sd">            &gt;&gt;&gt; PlumeAEM.T # Temperature values for AEM ith order solution</span>
+
+<span class="sd">	&quot;&quot;&quot;</span>
+        
+
+<span class="k">def</span> <span class="nf">query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">z</span><span class="p">,</span><span class="n">r</span><span class="p">):</span>
+        
+        <span class="sd">&quot;&quot;&quot; Method query returns the density, velocity profile, temperature, the electric potential at</span>
+<span class="sd">        particular (z,r) points in the Plume.</span>
+<span class="sd">        </span>
+<span class="sd">        These plasma properties are interpolated along the previously calculated 2D grids z_grid and r_grid </span>
+<span class="sd">        at targeted (z,r) points specified by the user. User must always check if np.max(r) &gt; np.max(self.r_grid),</span>
+<span class="sd">        np.max(z) &gt; np.max(self.z_grid) in their query point set,to avoid extrapolation results.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            :z (float,numpy.ndarray): new interpolation z points.</span>
+<span class="sd">            :r (float,numpy.ndarray): new interpolation r points.</span>
+<span class="sd">        </span>
+<span class="sd">        Outputs:</span>
+<span class="sd">            :lnn (int,numpy.ndarray): logarithmic plasma density at specified (z,r) points in plume grid</span>
+<span class="sd">            :u_z (int,numpy.ndarray): plasma axial velocity at specified (z,r) points in plume grid</span>
+<span class="sd">            :u_r (int,numpy.ndarray): plasma radial velocity at specified (z,r) points in plume grid</span>
+<span class="sd">            :T (int,numpy.ndarray): plasma temperature at specified (z,r) points in plume grid</span>
+<span class="sd">            :phi (int,numpy.ndarray): plasma ambipolar electric potential at specified (z,r) points in plume grid</span>
+<span class="sd">            :eta (int,numpy.ndarray): ion current stream lines at specified (z,r) points in plume grid</span>
+<span class="sd">            </span>
+<span class="sd">        Usage:</span>
+<span class="sd">            &gt;&gt;&gt; z,r = np.linspace(0,100,50),np.linspace(0,50,40) #target (z,r) for plume query</span>
+<span class="sd">            &gt;&gt;&gt; lnn,u_z,u_r,T,phi,eta=PlumeAEM.query(z,r)</span>
+
+<span class="sd">	&quot;&quot;&quot;</span>
+
+<span class="k">def</span> <span class="nf">grid_setup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">zpts</span><span class="p">,</span><span class="n">epts</span><span class="p">):</span>
+        
+        <span class="sd">&quot;&quot;&quot; grid_setup creates an strctured grid of z,r points where the AEM problem will be integrated.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            :zpts (int): number of axial points in the structure. Indicates legnth oof axial plume span</span>
+<span class="sd">            :epts (int): number of radial points in the structure. Indicates legnth of radial plume span</span>
+<span class="sd">            </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            :z_grid (numpy.ndarray): 2D matrix containing axial grid points for model integration</span>
+<span class="sd">            :r_grid (numpy.ndarray): 2D matrix containing radial grid points for model integration</span>
+<span class="sd">            </span>
+<span class="sd">        Usage:</span>
+<span class="sd">            &gt;&gt;&gt; z_grid,r_grid = PlumeAEM.grid_setup(100,50)</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+       
+<span class="k">def</span> <span class="nf">val_domain</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        
+        <span class="sd">&quot;&quot;&quot;val_domain class method evaluates the validity of the AEM series expansion  solution</span>
+<span class="sd">        at z_grid and r_grid points in the plume. Validity results for each AEM order</span>
+<span class="sd">        are stored  in the 3D matrix Plume.val. These matrix is filled with values indicating a specific validity condition</span>
+<span class="sd">        in the results.</span>
+<span class="sd">        </span>
+<span class="sd">        Validity Values</span>
+<span class="sd">            * 0 - Not valid for both velocity and density</span>
+<span class="sd">            * 1 - Valid only for velocity</span>
+<span class="sd">            * -1 - Valid only for density</span>
+<span class="sd">            * 2 - Valid for both velocity and density</span>
+<span class="sd">            </span>
+<span class="sd">	       </span>
+<span class="sd">            </span>
+<span class="sd">        Usage:</span>
+<span class="sd">            &gt;&gt;&gt; PlumeAEM.val_domain() #Intialize validity condition study</span>
+<span class="sd">            &gt;&gt;&gt; print(Plume.val) #See results of validation </span>
+
+<span class="sd">	&quot;&quot;&quot;</span>
+        
+
+<span class="k">def</span> <span class="nf">partial_derivs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">var</span><span class="p">,</span><span class="n">type2</span><span class="p">):</span>
+        
+        <span class="sd">&quot;&quot;&quot;Class method partial_derivs computes the partial derivatives of plasma variables with respect to </span>
+<span class="sd">        the physical z,r at the plume grid points.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            :var (numpy.ndarray): Variable values to derive at z,r grid points</span>
+<span class="sd">            :type2 (int): Integer defining the behaviour of the derivative at the borders and therefore the Type of varible to be differentiated.</span>
+<span class="sd">        </span>
+<span class="sd">                   	  * 0: Symmetric function. Border derivative value is set to 0</span>
+<span class="sd">                   </span>
+<span class="sd">                   	  * -1: Anti-symmetric function. Forward finite difference is used for border derivative calculation.</span>
+<span class="sd">                   </span>
+<span class="sd">       Returns:</span>
+<span class="sd">           :dvar_dz (numpy.ndarray): z-partial derivative values of input argument var at the grid points</span>
+<span class="sd">           :dvar_dr (numpy.ndarray): r-partial derivative values of input argument var at the grid points</span>
+<span class="sd">           </span>
+<span class="sd">       Usage:</span>
+<span class="sd">           &gt;&gt;&gt; dlnn0_dz,dlnn0dr = PlumeAEM.partial_derivs(Plume.lnn_0) #derivative of Zeroth order density correction</span>
+
+<span class="sd">	&quot;&quot;&quot;</span>
+    
+</pre></div>
+</div>
+</div>
+<div class="section" id="ssm-class-and-methods">
+<h2>SSM class and methods<a class="headerlink" href="#ssm-class-and-methods" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">SSM</span><span class="p">(</span><span class="n">Hyperplume</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;Self Similar model of a plasma plume expansion.Class SSM inherits methods __init__,solver </span>
+<span class="sd">    and query from parent class Hyperplume, and particularizes them.&quot;&quot;&quot;</span>
+    
+    
+    
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">plasma</span><span class="p">,</span><span class="n">M_0</span><span class="p">,</span><span class="n">d_0</span><span class="p">,</span><span class="n">z_span</span><span class="p">,</span><span class="n">r_span</span><span class="p">,</span><span class="n">n_init</span><span class="p">):</span>
+        
+        <span class="sd">&quot;&quot;&quot;Constructor __init__ loads and initialises the main class attributes.</span>
+<span class="sd">        Calls parent class Hyperplume constructor method __init__ to store main plasma properties as attributes in the class.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            :plasma (dict): simple_plasma object dictionary containing basic plasma parameters.</span>
+<span class="sd">            :z_span (numpy.ndarray): axial region where the problem will be integrated.</span>
+<span class="sd">            :r_span (numpy.ndarray): initial far-field plasma radial profile.</span>
+<span class="sd">            :n_init (numpy.ndarray): initial dimensional density front.</span>
+<span class="sd">            :M_0 (float): Plasma Mach number at (z,r) = (0,0)</span>
+<span class="sd">            :d_0 (float): Tangent of initial plume divergence angle</span>
+<span class="sd">            </span>
+<span class="sd">        Implementation:</span>
+<span class="sd">            &gt;&gt;&gt; e_charge,ion_mass =1.6e-19,2.1801714e-25</span>
+<span class="sd">            &gt;&gt;&gt; Plasma_temp,gamma_value = 2.1801714e-19,1</span>
+<span class="sd">            &gt;&gt;&gt; Plasma = Hyperplume().simple_plasma(e_charge,ion_mass,</span>
+<span class="sd">		Plasma_temp,gamma_value) </span>
+<span class="sd">            &gt;&gt;&gt; z_span = np.linspace(0,110,5000) </span>
+<span class="sd">            &gt;&gt;&gt; r_0 = np.linspace(0,10,5000) </span>
+<span class="sd">            &gt;&gt;&gt; n0 =  np.exp(-6.15/2 * r_0**2) </span>
+<span class="sd">            &gt;&gt;&gt; M0,d0=20,0.2 </span>
+<span class="sd">            &gt;&gt;&gt; Plume = SSM(Plasma,M0,d0,z_span,r_0,n0) </span>
+<span class="sd">        &quot;&quot;&quot;</span> 
+    <span class="k">def</span> <span class="nf">solver</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        
+        <span class="sd">&quot;&quot;&quot;Solver method solves for model constriants C and h, as well as  the initial dimensionless axial velocity vector upsilon </span>
+<span class="sd">        and initial dimensionless density profile nu, using SSM model equations. It then saves this plume variables as as class attributes,</span>
+<span class="sd">        in the form of interpolation libraries over the entire plume grid.</span>
+<span class="sd">        </span>
+<span class="sd">        Solver method is a particularization of the abstrac Hyperplume.solver() method.</span>
+<span class="sd">        </span>
+<span class="sd">        Implementation:</span>
+<span class="sd">            </span>
+<span class="sd">            &gt;&gt;&gt; Plume.solver() </span>
+
+<span class="sd">	Important variables in solver method</span>
+
+<span class="sd">	:C (float): SSM model separation constraint </span>
+<span class="sd">	:h_interp (function): SSM dilation function interpolation library</span>
+<span class="sd">	:dh_interp (function): Derivative of SSM dilation function h</span>
+<span class="sd">	:nu_interp (function): Dimensionless plasma density function</span>
+<span class="sd">	:nu_prime_interp (function): Derivative of Dimensionless plasma density function</span>
+<span class="sd">        :upsilon_interp (function): Dimensionless plume axial velocity interpolation library</span>
+
+<span class="sd">        To access the interpolation libraries and SSM constraints particularly:</span>
+<span class="sd">        </span>
+<span class="sd">            &gt;&gt;&gt; print(Plume.C,Plume.h) </span>
+<span class="sd">	    &gt;&gt;&gt; eta_target = 0.8	</span>
+<span class="sd">            &gt;&gt;&gt; Plume.nu_interp(eta_target)</span>
+<span class="sd">            &gt;&gt;&gt; Plume.upsilon_interp(eta_target)</span>
+
+<span class="sd">	&quot;&quot;&quot;</span>
+
+    	<span class="k">def</span> <span class="nf">dh_fun</span><span class="p">(</span><span class="n">h</span><span class="p">,</span><span class="n">Z</span><span class="p">):</span>
+            
+            <span class="sd">&quot;&quot;&quot;dh_fun function calculates the derivative of the self-similar dilation function h(z), </span>
+<span class="sd">            and saves the results as a class attribute in column-array format </span>
+<span class="sd">            </span>
+<span class="sd">            Args:</span>
+<span class="sd">                :h (numpy.ndarray): SSM model scaling function</span>
+<span class="sd">                :Z (numpy.ndarray): axial span for integration. Coincidet with initial axial span loaded in SSS </span>
+<span class="sd">                                                                class constructor,for accruacy and correctness)</span>
+<span class="sd">            Returns:</span>
+<span class="sd">                :dh (numpy.ndarray): derivative of SSM scaling function</span>
+<span class="sd">                </span>
+<span class="sd">            &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">z</span><span class="p">,</span><span class="n">r</span><span class="p">):</span>
+        
+        <span class="sd">&quot;&quot;&quot; Method query returns the density, velocity profile, temperature, the electric potential and SSM error at</span>
+<span class="sd">        particular (z,r) points by interpolation over the Plume grid.</span>
+<span class="sd">        SSM method query is a particulatization of the abstract Hyperplume method Hyperplume.query()</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            :z (int,numpy.ndarray): axial target points where plasma variables are retrieved. Single points, arrays of locations and meshgrids are valid.</span>
+<span class="sd">            :r (int,numpy.ndarray): axial target points where plasma variables are retrieved. Single points, arrays of locations and meshgrids are valid.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            :lnn (int,numpy.ndarray): logarithmic plasma density at specified (z,r) points in plume grid</span>
+<span class="sd">            :u_z (int,numpy.ndarray): plasma axial velocity at specified (z,r) points in plume grid</span>
+<span class="sd">            :u_r (int,numpy.ndarray): plasma radial velocity at specified (z,r) points in plume grid</span>
+<span class="sd">            :T (int,numpy.ndarray): plasma temperature at specified (z,r) points in plume grid</span>
+<span class="sd">            :phi (int,numpy.ndarray): plasma ambipolar electric potential at specified (z,r) points in plume grid</span>
+<span class="sd">            :error (int,numpy.ndarray): SSM error created by imposing model constraints at specified (z,r) points in plume grid</span>
+<span class="sd">            :eta (int,numpy.ndarray): ion current stream lines at specified (z,r) points in plume grid</span>
+<span class="sd">            </span>
+<span class="sd">        Usage:</span>
+<span class="sd">            &gt;&gt;&gt; z,r = np.linspace(0,100,50),np.linspace(0,50,40) </span>
+<span class="sd">            &gt;&gt;&gt; lnn,u_z,u_r,T,phi,error,eta=Plume.query(z,r)</span>
+<span class="sd">            </span>
+<span class="sd">	&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">type_parks</span><span class="p">(</span><span class="n">plasma</span><span class="p">,</span><span class="n">M_0</span><span class="p">,</span><span class="n">d_0</span><span class="p">,</span><span class="n">z_span</span><span class="p">,</span><span class="n">r_0</span><span class="p">,</span><span class="n">C</span><span class="p">):</span>
+
+	    <span class="sd">&quot;&quot;&quot; type_parks functions allow the user to generate default plume density profiles based on the theoretical </span>
+<span class="sd">	    Parks plume model. The function creates the initial density profile following</span>
+<span class="sd">	    the theoretical model, and creates a SSM Plume object with unique characteristics</span>
+
+<span class="sd">	    Args:</span>
+<span class="sd">		:plasma (dict): Hyperplume&#39;s simple_plasma object, or otherwise a similar plasma dictionary containing basic parameters.</span>
+<span class="sd">		:z_span (numpy.ndarray): axial region where the problem will be integrated.</span>
+<span class="sd">		:r_0 (numpy.ndarray): initial far-field plasma radial profile.</span>
+<span class="sd">		:M_0 (float): Plasma Mach number at (z,r) = (0,0)</span>
+<span class="sd">		:d_0 (float): Tangent of initial plume divergence angle</span>
+<span class="sd">		:C (float): SSM model constraint. C is a separation constant used for scaling the Self-Similarity plume proble.</span>
+<span class="sd">			   C is used to determine the initial density profile derived by Parks. </span>
+<span class="sd">			   In particular: </span>
+<span class="sd">			   	* n_parks = np.exp(-C*r_0**2 /2)</span>
+<span class="sd">	   Returns:</span>
+<span class="sd">	       :Plume (object): SSM Plume object preloaded and solved with Parks theoretical density and axial velocity models.</span>
+
+<span class="sd">	   Usage:</span>
+<span class="sd">	       &gt;&gt;&gt; Plasma = Hyperplume().simple_plasma(e_charge,ion_mass,</span>
+<span class="sd">	           Plasma_temp,gamma_value) </span>
+<span class="sd">	       &gt;&gt;&gt; z_span = np.linspace(0,110,5000) </span>
+<span class="sd">	       &gt;&gt;&gt; r_0 = np.linspace(0,10,5000)</span>
+<span class="sd">	       &gt;&gt;&gt; C = 6.15</span>
+<span class="sd">	       &gt;&gt;&gt;Plume_parks = type_parks(Plasma,z_span,r_0,C)</span>
+<span class="sd">	       &gt;&gt;&gt; lnn,u_z_,u_r,T,phi,error,eta=Plume_parks.query(z,r)</span>
+<span class="sd">        </span>
+<span class="sd">		&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">type_korsun</span><span class="p">(</span><span class="n">plasma</span><span class="p">,</span><span class="n">M_0</span><span class="p">,</span><span class="n">d_0</span><span class="p">,</span><span class="n">Z_span</span><span class="p">,</span><span class="n">r_0</span><span class="p">,</span><span class="n">C</span><span class="p">):</span>
+
+	    <span class="sd">&quot;&quot;&quot; type_parks functions allow the user to generate default plume density profiles based on the theoretical </span>
+<span class="sd">	    Korsun plume model. The function creates the initial density profile following</span>
+<span class="sd">	    the theoretical model, and creates a SSM Plume object with unique characteristics</span>
+
+<span class="sd">	    Args:</span>
+<span class="sd">		:plasma (dict): Hyperplume&#39;s simple_plasma object, or otherwise a similar plasma dictionary containing basic parameters.</span>
+<span class="sd">		:z_span (numpy.ndarray): axial region where the problem will be integrated.</span>
+<span class="sd">		:r_0 (numpy.ndarray): initial far-field plasma radial profile.</span>
+<span class="sd">		:M_0 (float): Plasma Mach number at (z,r) = (0,0)</span>
+<span class="sd">		:d_0 (float): Tangent of initial plume divergence angle</span>
+<span class="sd">		:C (float): SSM model constraint. C is a separation constant used for scaling the Self-Similarity plume problem.</span>
+<span class="sd">			   C is used to determine the initial density and axial velocity profiles derived by Korsun.</span>
+<span class="sd">			   In particular:</span>
+<span class="sd">			   	* n_parks = 1 / (1 + C / 2 * r_0**2 )</span>
+<span class="sd">			   	* upsilon_parks = (1 + C / 2 * r_0**2 )**(gamma/2)</span>
+
+<span class="sd">	   Returns:</span>
+<span class="sd">	       :Plume (object): SSM Plume object preloaded and solved with Parks theoretical density and axial velocity models.</span>
+
+<span class="sd">	   Usage:</span>
+<span class="sd">	       &gt;&gt;&gt; Plasma = Hyperplume().simple_plasma(e_charge,ion_mass,</span>
+<span class="sd">                   Plasma_temp,gamma_value) </span>
+<span class="sd">	       &gt;&gt;&gt; z_span = np.linspace(0,110,5000) # Axial plume grid for integration</span>
+<span class="sd">	       &gt;&gt;&gt; r_0 = np.linspace(0,10,5000) #Initial plume radial profile</span>
+<span class="sd">	       &gt;&gt;&gt; C = 6.15</span>
+<span class="sd">	       &gt;&gt;&gt;Plume_korsun = type_korsun(Plasma,z_span,r_0,C)</span>
+<span class="sd">	       &gt;&gt;&gt; lnn,u_z_,u_r,T,phi,error,eta=Plume_korsun.query(z,r)</span>
+<span class="sd">	</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">type_ashkenazy</span><span class="p">(</span><span class="n">plasma</span><span class="p">,</span><span class="n">M_0</span><span class="p">,</span><span class="n">d_0</span><span class="p">,</span><span class="n">Z_span</span><span class="p">,</span><span class="n">r_0</span><span class="p">,</span><span class="n">C</span><span class="p">):</span>
+
+	    <span class="sd">&quot;&quot;&quot; type_ashkenazy functions allow the user to generate default plume density profiles based on the theoretical </span>
+<span class="sd">	    ashkenazy plume model. The function creates the initial density profile following</span>
+<span class="sd">	    the theoretical model, and creates a SSM Plume object with unique characteristics.</span>
+
+<span class="sd">	    Args:</span>
+<span class="sd">		:plasma (dict): Hyperplume&#39;s simple_plasma object, or otherwise a similar plasma dictionary containing basic parameters.</span>
+<span class="sd">		:z_span (numpy.ndarray): axial region where the problem will be integrated.</span>
+<span class="sd">		:r_0 (numpy.ndarray): initial far-field plasma radial profile.</span>
+<span class="sd">		:M_0 (float): Plasma Mach number at (z,r) = (0,0)</span>
+<span class="sd">		:d_0 (float): Tangent of initial plume divergence angle</span>
+<span class="sd">		:C (float): SSM model constraint. C is a separation constant used for scaling the Self-Similarity plume problem.</span>
+<span class="sd">			   C is used to determine the initial density profile derived by Ashkenazy. </span>
+<span class="sd">			   In particular:</span>
+<span class="sd">			   	* n_parks = (1 + k*r_0**2)**(-C/(2*k))</span>
+<span class="sd">			   	* upsilon_parks = (1 + k*r_0**2)**(-1/2), where k = d_0**2</span>
+
+<span class="sd">	   Returns:</span>
+<span class="sd">	       :Plume (object): SSM Plume object preloaded and solved with Parks theoretical density and axial velocity models.</span>
+
+<span class="sd">	   Usage:</span>
+<span class="sd">	       &gt;&gt;&gt; Plasma = Hyperplume().simple_plasma(e_charge,ion_mass,</span>
+<span class="sd">		   Plasma_temp,gamma_value) </span>
+<span class="sd">	       &gt;&gt;&gt; z_span = np.linspace(0,110,5000) </span>
+<span class="sd">	       &gt;&gt;&gt; r_0 = np.linspace(0,10,5000) </span>
+<span class="sd">	       &gt;&gt;&gt; C = 6.15</span>
+<span class="sd">	       &gt;&gt;&gt;Plume_ashk = type_ashkenazy(Plasma,z_span,r_0,C)</span>
+<span class="sd">	       &gt;&gt;&gt; lnn,u_z_,u_r,T,phi,error,eta=Plume_ashk.query(z,r)</span>
+
+<span class="sd">	&quot;&quot;&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="code-testing-suite">
+<h2>Code testing suite<a class="headerlink" href="#code-testing-suite" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Test_Hyperplume</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;Class Test_AEM checks the interface of the Plume Class Hyperplume, by running test on each of its indpendent methods&quot;&quot;&quot;</span>
+    
+    <span class="k">def</span> <span class="nf">test_interface</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        
+        <span class="sd">&quot;&quot;&quot; tests on user call methods&quot;&quot;&quot;</span>
+        
+        <span class="n">Object</span> <span class="o">=</span> <span class="n">Hyperplume</span><span class="p">()</span> <span class="c">#call with preloaded input arguments</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsNotNone</span><span class="p">(</span><span class="n">Object</span><span class="p">)</span> <span class="c">#checking for object creation</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsInstance</span><span class="p">(</span><span class="n">Object</span><span class="p">,</span><span class="n">Hyperplume</span><span class="p">)</span> <span class="c">#checking for Object classification</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsNotNone</span><span class="p">(</span><span class="n">Object</span><span class="o">.</span><span class="n">Gamma</span><span class="p">)</span> <span class="c">#checking for class attributes initalization</span>
+        
+        <span class="n">Object2</span> <span class="o">=</span> <span class="n">Hyperplume</span><span class="p">(</span><span class="n">plasma</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;Electrons&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;Gamma&#39;</span><span class="p">:</span> <span class="mf">1.3</span><span class="p">,</span><span class="s">&#39;T_0_electron&#39;</span><span class="p">:</span> <span class="mf">2.1801714e-19</span><span class="p">,</span><span class="s">&#39;q_electron&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.6e-19</span><span class="p">},</span><span class="s">&#39;Ions&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;mass_ion&#39;</span><span class="p">:</span> <span class="mf">2.1801714e-25</span><span class="p">,</span> <span class="s">&#39;q_ion&#39;</span><span class="p">:</span> <span class="mf">1.6e-19</span><span class="p">}},</span><span class="n">z_span</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">500</span><span class="p">),</span><span class="n">r_span</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">500</span><span class="p">),</span><span class="n">n_init</span><span class="o">=</span><span class="mf">0.0472</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">500</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="c">#cration of Hyperplume object with different arguments</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsNotNone</span><span class="p">(</span><span class="n">Object2</span><span class="p">)</span> <span class="c">#checking for object creation</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsInstance</span><span class="p">(</span><span class="n">Object2</span><span class="p">,</span><span class="n">Hyperplume</span><span class="p">)</span> <span class="c">#checking for Object classification</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsNotNone</span><span class="p">(</span><span class="n">Object2</span><span class="o">.</span><span class="n">plasma</span><span class="p">)</span> <span class="c">#checking for class attributes initalization</span>
+        
+    <span class="k">def</span> <span class="nf">test_solver</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        
+        <span class="n">Object</span> <span class="o">=</span> <span class="n">Hyperplume</span><span class="p">()</span> 
+        
+        <span class="n">Object</span><span class="o">.</span><span class="n">solver</span><span class="p">()</span> <span class="c">#testing abstract method Hyperplume.solver()</span>
+        
+    <span class="k">def</span> <span class="nf">test_simple_plasma</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        
+        <span class="n">Plasma</span> <span class="o">=</span> <span class="n">Hyperplume</span><span class="p">()</span><span class="o">.</span><span class="n">simple_plasma</span><span class="p">(</span><span class="n">charge</span><span class="o">=</span><span class="mf">1.6e-19</span><span class="p">,</span><span class="n">ion_mass</span><span class="o">=</span><span class="mf">2.1801714e-25</span><span class="p">,</span><span class="n">init_plasma_temp</span><span class="o">=</span><span class="mf">2.1801714e-19</span><span class="p">,</span><span class="n">Gamma</span><span class="o">=</span><span class="mf">1.2</span><span class="p">)</span> <span class="c">#creation of simple_plasma object with user given input arguments</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsNotNone</span><span class="p">(</span><span class="n">Plasma</span><span class="p">)</span> <span class="c">#testing for plasma creation</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">Plasma</span><span class="p">[</span><span class="s">&#39;Ions&#39;</span><span class="p">][</span><span class="s">&#39;mass_ion&#39;</span><span class="p">]</span><span class="o">==</span><span class="mf">2.1801714e-25</span><span class="p">)</span> <span class="c">#testing for method performance</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">Plasma</span><span class="p">[</span><span class="s">&#39;Electrons&#39;</span><span class="p">][</span><span class="s">&#39;Gamma&#39;</span><span class="p">]</span><span class="o">==</span><span class="mf">1.2</span><span class="p">)</span>
+        
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">assertRaises</span><span class="p">(</span><span class="ne">KeyError</span><span class="p">):</span>
+            
+            <span class="n">Plasma</span><span class="p">[</span><span class="s">&#39;Ions&#39;</span><span class="p">][</span><span class="s">&#39;T_0_electron&#39;</span><span class="p">]</span> <span class="c">#testing expected errors in simple_plasma wrong calling</span>
+            
+            <span class="n">Plasma</span><span class="p">[</span><span class="s">&#39;Ions&#39;</span><span class="p">][</span><span class="s">&#39;Gamma&#39;</span><span class="p">]</span>
+            
+            <span class="n">Plasma</span><span class="p">[</span><span class="s">&#39;Electrons&#39;</span><span class="p">][</span><span class="s">&#39;mass_ion&#39;</span><span class="p">]</span>
+            
+            <span class="n">Plasma</span><span class="p">[</span><span class="s">&#39;Electrons&#39;</span><span class="p">][</span><span class="s">&#39;q_ion&#39;</span><span class="p">]</span>
+            
+    <span class="k">def</span> <span class="nf">test_deriver</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        
+        <span class="sd">&quot;&quot;&quot;Testing Easplume.eta_deriver method&quot;&quot;&quot;</span>
+        
+        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">10</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span>
+            
+        <span class="n">diff_y</span> <span class="o">=</span> <span class="n">Hyperplume</span><span class="p">()</span><span class="o">.</span><span class="n">eta_deriver</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span> 
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsNotNone</span><span class="p">(</span><span class="n">diff_y</span><span class="p">)</span> <span class="c">#checking creation of diff_y</span>
+        
+    <span class="k">def</span> <span class="nf">test_plasma_methods</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        
+        <span class="sd">&quot;&quot;&quot;Different tests on Easplume methods self.n,self.phi,self.temp&quot;&quot;&quot;</span>
+        
+        <span class="n">T1</span> <span class="o">=</span> <span class="n">Hyperplume</span><span class="p">()</span><span class="o">.</span><span class="n">temp</span><span class="p">(</span><span class="mf">0.043</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mf">2.1801714e-19</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+        
+        <span class="n">T2</span> <span class="o">=</span> <span class="n">Hyperplume</span><span class="p">()</span><span class="o">.</span><span class="n">temp</span><span class="p">(</span><span class="mf">0.043</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mf">2.1801714e-19</span><span class="p">,</span><span class="mf">1.2</span><span class="p">)</span>
+        
+        <span class="n">phi1</span> <span class="o">=</span> <span class="n">Hyperplume</span><span class="p">()</span><span class="o">.</span><span class="n">phi</span><span class="p">(</span><span class="mf">0.043</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mf">2.1801714e-19</span><span class="p">,</span><span class="mf">1.2</span><span class="p">,</span><span class="o">-</span><span class="mf">1.6e-19</span><span class="p">)</span>
+        
+        <span class="n">phi2</span> <span class="o">=</span> <span class="n">Hyperplume</span><span class="p">()</span><span class="o">.</span><span class="n">phi</span><span class="p">(</span><span class="mf">0.043</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mf">2.1801714e-19</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mf">1.6e-19</span><span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsNotNone</span><span class="p">(</span><span class="n">T1</span><span class="p">)</span> <span class="c">#checking good return of method</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsNotNone</span><span class="p">(</span><span class="n">phi1</span><span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertNotEqual</span><span class="p">(</span><span class="n">T1</span><span class="p">,</span><span class="n">T2</span><span class="p">)</span> <span class="c">#checking good performance on method based on thermal expansion model</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertNotEqual</span><span class="p">(</span><span class="n">phi1</span><span class="p">,</span><span class="n">phi2</span><span class="p">)</span> <span class="c">#checking good performance on method based on thermal expansion model</span>
+        
+<span class="k">class</span> <span class="nc">Test_AEM_plume</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;Class Test_AEM checks the interface of the Plume Class AEM, by running test on each of its indpendent methods&quot;&quot;&quot;</span>
+    
+    <span class="k">def</span> <span class="nf">test_interface</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        
+        <span class="sd">&quot;&quot;&quot;Tests on User AEM call interface&quot;&quot;&quot;</span> 
+        
+        <span class="n">Plume1</span> <span class="o">=</span> <span class="n">AEM</span><span class="p">()</span> <span class="c">#call with preloaded input arguments</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsInstance</span><span class="p">(</span><span class="n">Plume1</span><span class="p">,</span><span class="n">AEM</span><span class="p">)</span> <span class="c">#checking for Object classification</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsNotNone</span><span class="p">(</span><span class="n">Plume1</span><span class="o">.</span><span class="n">eps</span><span class="p">)</span> <span class="c">#checking for class attributes initalization</span>
+        
+        <span class="n">P</span> <span class="o">=</span> <span class="n">Hyperplume</span><span class="p">()</span><span class="o">.</span><span class="n">simple_plasma</span><span class="p">(</span><span class="mf">1.6e-19</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mf">1.5</span><span class="p">,</span><span class="mf">1.4</span><span class="p">)</span>
+    
+        <span class="n">Z_span</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">100</span><span class="p">,</span><span class="mi">20</span><span class="p">)</span>
+    
+        <span class="n">eta_0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">40</span><span class="p">,</span><span class="mi">20</span><span class="p">)</span>
+    
+        <span class="n">n0</span> <span class="o">=</span>  <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mf">0.05</span><span class="o">*</span><span class="n">eta_0</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+
+        <span class="n">Plume</span> <span class="o">=</span> <span class="n">AEM</span><span class="p">(</span><span class="n">P</span><span class="p">,</span><span class="n">Z_span</span><span class="p">,</span><span class="n">eta_0</span><span class="p">,</span><span class="n">n0</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mf">0.1</span><span class="p">,</span><span class="mi">20</span><span class="p">),</span><span class="mf">0.6</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mf">0.1</span><span class="p">,</span><span class="mi">20</span><span class="p">))</span> <span class="c">#call with user given input arguments</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsInstance</span><span class="p">(</span><span class="n">Plume</span><span class="p">,</span><span class="n">AEM</span><span class="p">)</span> <span class="c">#checking for Object classification</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsNotNone</span><span class="p">(</span><span class="n">Plume</span><span class="o">.</span><span class="n">Gamma</span><span class="p">)</span> <span class="c">#checking for class attributes initalization</span>
+        
+        
+    <span class="k">def</span> <span class="nf">test_solvers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        
+        <span class="sd">&quot;&quot;&quot;Tests on AEM Class self.solver() and self.maching_solver methods&quot;&quot;&quot;</span>
+        
+        <span class="n">Plume</span> <span class="o">=</span> <span class="n">AEM</span><span class="p">()</span>
+        
+        <span class="n">Plume</span><span class="o">.</span><span class="n">solver</span><span class="p">()</span>  <span class="c">#testing particular method AEM.solver() based  on Hyperplume.solver() abstract method</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsNotNone</span><span class="p">(</span><span class="n">Plume</span><span class="o">.</span><span class="n">uz_0</span><span class="p">)</span> <span class="c">#testing the creation of Plume AEM zeroth order correction results</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsNotNone</span><span class="p">(</span><span class="n">Plume</span><span class="o">.</span><span class="n">uz</span><span class="p">[</span><span class="mi">0</span><span class="p">,:,:])</span> <span class="c">#testing the creation of Plume properties results for cold beam solution plasma</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">Plume</span><span class="o">.</span><span class="n">uz_0</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="n">Plume</span><span class="o">.</span><span class="n">uz</span><span class="p">[</span><span class="mi">0</span><span class="p">,:,:]</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="c">#testing shape matching and good performance of solver method</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">Plume</span><span class="o">.</span><span class="n">uz_0</span><span class="p">)</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">Plume</span><span class="o">.</span><span class="n">uz</span><span class="p">[</span><span class="mi">0</span><span class="p">,:,:]))</span> <span class="c">#testing perfect element matching and good performance of solver method</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsNotNone</span><span class="p">(</span><span class="n">Plume</span><span class="o">.</span><span class="n">uz_1</span><span class="p">,</span><span class="n">Plume</span><span class="o">.</span><span class="n">uz</span><span class="p">[</span><span class="mi">1</span><span class="p">,:,:])</span> <span class="c">#testing the creation of Plume AEM higher order correction results</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsNotNone</span><span class="p">(</span><span class="n">Plume</span><span class="o">.</span><span class="n">uz_2</span><span class="p">,</span><span class="n">Plume</span><span class="o">.</span><span class="n">uz</span><span class="p">[</span><span class="mi">2</span><span class="p">,:,:])</span> 
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">Plume</span><span class="o">.</span><span class="n">uz_1</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="n">Plume</span><span class="o">.</span><span class="n">uz</span><span class="p">[</span><span class="mi">1</span><span class="p">,:,:]</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="c">#testing shape matching and good performance of solver method for higher orders</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">Plume</span><span class="o">.</span><span class="n">uz_2</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="n">Plume</span><span class="o">.</span><span class="n">uz</span><span class="p">[</span><span class="mi">2</span><span class="p">,:,:]</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> 
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">Plume</span><span class="o">.</span><span class="n">uz_1</span><span class="p">)</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">Plume</span><span class="o">.</span><span class="n">uz</span><span class="p">[</span><span class="mi">1</span><span class="p">,:,:]))</span> <span class="c">#testing element difference and good performance of solver method on higher order AEM corrections</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">Plume</span><span class="o">.</span><span class="n">uz_2</span><span class="p">)</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">Plume</span><span class="o">.</span><span class="n">uz</span><span class="p">[</span><span class="mi">2</span><span class="p">,:,:]))</span>
+        
+        <span class="n">Plasma</span> <span class="o">=</span> <span class="n">Hyperplume</span><span class="p">()</span><span class="o">.</span><span class="n">simple_plasma</span><span class="p">(</span><span class="mf">1.6e-19</span><span class="p">,</span><span class="mf">2.1801714e-25</span><span class="p">,</span><span class="mf">2.1801714e-19</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+    
+        <span class="n">Z_span</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">100</span><span class="p">,</span><span class="mi">2001</span><span class="p">)</span>
+        
+        <span class="n">eta_0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">101</span><span class="p">)</span>
+        
+        <span class="n">n0</span> <span class="o">=</span>  <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mf">6.15</span><span class="o">/</span><span class="mi">2</span><span class="o">*</span><span class="n">eta_0</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+        
+        <span class="n">uz1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">20000</span><span class="p">,</span><span class="mi">20000</span><span class="p">,</span><span class="mi">101</span><span class="p">)</span>
+        <span class="n">ur1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mf">1.607695154586736e+04</span><span class="p">,</span><span class="mi">101</span><span class="p">)</span>
+        
+        <span class="n">Plume1</span> <span class="o">=</span> <span class="n">AEM</span><span class="p">(</span><span class="n">Plasma</span><span class="p">,</span><span class="n">Z_span</span><span class="p">,</span><span class="n">eta_0</span><span class="p">,</span><span class="n">n0</span><span class="p">,</span><span class="n">uz1</span><span class="p">,</span><span class="n">ur1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+        
+        <span class="n">Plume1</span><span class="o">.</span><span class="n">marching_solver</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span> <span class="c">#testing particular method AEM.marching_solver() </span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsNotNone</span><span class="p">(</span><span class="n">Plume1</span><span class="o">.</span><span class="n">z_grid</span><span class="p">)</span> <span class="c">#testing the creation of Plume properties results </span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsNotNone</span><span class="p">(</span><span class="n">Plume1</span><span class="o">.</span><span class="n">lnn</span><span class="p">,)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertNotEqual</span><span class="p">(</span><span class="n">Plume</span><span class="o">.</span><span class="n">lnn</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span><span class="n">Plume1</span><span class="o">.</span><span class="n">lnn</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="c">#testing good performance of marching_solver</span>
+        
+
+    <span class="k">def</span> <span class="nf">test_query</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        
+        <span class="sd">&quot;&quot;&quot;Assertiveness of method query inside AEM plume class&quot;&quot;&quot;</span>
+        
+        <span class="n">P</span> <span class="o">=</span> <span class="n">Hyperplume</span><span class="p">()</span><span class="o">.</span><span class="n">simple_plasma</span><span class="p">(</span><span class="mf">1.6e-19</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mf">1.5</span><span class="p">,</span><span class="mf">1.4</span><span class="p">)</span>
+    
+        <span class="n">Z_span</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">100</span><span class="p">,</span><span class="mi">20</span><span class="p">)</span>
+        
+        <span class="n">eta_0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">40</span><span class="p">,</span><span class="mi">20</span><span class="p">)</span>
+        
+        <span class="n">n0</span> <span class="o">=</span>  <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mf">0.05</span><span class="o">*</span><span class="n">eta_0</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    
+        <span class="n">Plume</span> <span class="o">=</span> <span class="n">AEM</span><span class="p">(</span><span class="n">P</span><span class="p">,</span><span class="n">Z_span</span><span class="p">,</span><span class="n">eta_0</span><span class="p">,</span><span class="n">n0</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mf">0.1</span><span class="p">,</span><span class="mi">20</span><span class="p">),</span><span class="mf">0.6</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mf">0.1</span><span class="p">,</span><span class="mi">20</span><span class="p">))</span>
+        
+        <span class="n">Plume</span><span class="o">.</span><span class="n">solver</span><span class="p">()</span>
+        
+        <span class="n">z_target</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">15</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">25</span><span class="p">,</span><span class="mi">30</span><span class="p">])</span>
+        
+        <span class="n">r_target</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">20</span><span class="p">,</span><span class="mi">25</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="mi">35</span><span class="p">])</span>
+        
+        <span class="n">ZZ</span><span class="p">,</span><span class="n">RR</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">z_target</span><span class="p">,</span><span class="n">r_target</span><span class="p">)</span>
+        
+        <span class="n">lnn</span><span class="p">,</span><span class="n">u_z</span><span class="p">,</span><span class="n">u_r</span><span class="p">,</span><span class="n">T</span><span class="p">,</span><span class="n">phi</span><span class="p">,</span><span class="n">eta</span> <span class="o">=</span> <span class="n">Plume</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">ZZ</span><span class="p">,</span><span class="n">RR</span><span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsNotNone</span><span class="p">(</span><span class="n">lnn</span><span class="p">,</span><span class="n">T</span><span class="p">)</span> <span class="c">#tsting good return of query method</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">lnn</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+
+<span class="k">class</span> <span class="nc">Test_SSM_plume</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;Class Test_SSM_Plume performs different validity tests on Class SSM, by checking on each of its indpendent methods&quot;&quot;&quot;</span>
+    
+    <span class="k">def</span> <span class="nf">test_SSM__init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        
+        <span class="sd">&quot;&quot;&quot; Testin SSM interface.Several calling methods for class SSM.&quot;&quot;&quot;</span>
+        
+        <span class="n">Plume1</span> <span class="o">=</span> <span class="n">SSM</span><span class="p">()</span> <span class="c">#Creation of SSM plume with default input arguments</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsInstance</span><span class="p">(</span><span class="n">Plume1</span><span class="p">,</span><span class="n">SSM</span><span class="p">)</span> <span class="c">#checking categorization of Plume1</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsNotNone</span><span class="p">(</span><span class="n">Plume1</span><span class="p">)</span> <span class="c">#checking object creation of class SSM</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">Plume1</span><span class="o">.</span><span class="n">M_0</span><span class="p">,</span><span class="mi">40</span><span class="p">)</span> <span class="c">#checking creation of class attributes</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">Plume1</span><span class="o">.</span><span class="n">d_0</span><span class="p">,</span><span class="mf">0.2</span><span class="p">)</span>
+        
+        <span class="n">Plasma</span> <span class="o">=</span> <span class="n">Hyperplume</span><span class="p">()</span><span class="o">.</span><span class="n">simple_plasma</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> 
+        
+        <span class="n">Z_span</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">100</span><span class="p">,</span><span class="mi">500</span><span class="p">)</span>
+    
+        <span class="n">eta_0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">40</span><span class="p">,</span><span class="mi">500</span><span class="p">)</span>
+        
+        <span class="n">nu</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span> <span class="mf">0.047</span> <span class="o">*</span> <span class="n">eta_0</span><span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+        
+        <span class="n">Plume3</span> <span class="o">=</span> <span class="n">SSM</span><span class="p">(</span><span class="n">Plasma</span><span class="p">,</span><span class="mi">40</span><span class="p">,</span><span class="mf">0.2</span><span class="p">,</span><span class="n">Z_span</span><span class="p">,</span><span class="n">eta_0</span><span class="p">,</span><span class="n">nu</span><span class="p">)</span> <span class="c">#alternative creation of SSM plume object with user given inputs</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsInstance</span><span class="p">(</span><span class="n">Plume3</span><span class="p">,</span><span class="n">SSM</span><span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsNotNone</span><span class="p">(</span><span class="n">Plume3</span><span class="p">)</span>
+        
+        <span class="n">upsilon</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">nu</span><span class="o">.</span><span class="n">size</span><span class="p">)</span> 
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertRaises</span><span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span><span class="n">Plume4</span> <span class="o">=</span> <span class="n">SSM</span><span class="p">,</span> <span class="n">args</span> <span class="o">=</span> <span class="p">(</span><span class="n">Plasma</span><span class="p">,</span><span class="mi">40</span><span class="p">,</span><span class="mf">0.2</span><span class="p">,</span><span class="n">Z_span</span><span class="p">,</span><span class="n">eta_0</span><span class="p">,</span><span class="n">nu</span><span class="p">,</span><span class="n">upsilon</span><span class="p">))</span> <span class="c"># only initial density vector can be passed as input to SSM class. Error should be raised when both initial velocity and density profiles are given</span>
+    
+    <span class="k">def</span> <span class="nf">test_solver</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        
+        <span class="sd">&quot;&quot;&quot;Tests on SSM Class self.solver() method&quot;&quot;&quot;</span>
+        
+        <span class="n">Plasma</span> <span class="o">=</span> <span class="n">Hyperplume</span><span class="p">()</span><span class="o">.</span><span class="n">simple_plasma</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> 
+        
+        <span class="n">Z_span</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">100</span><span class="p">,</span><span class="mi">500</span><span class="p">)</span>
+    
+        <span class="n">eta_0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">40</span><span class="p">,</span><span class="mi">500</span><span class="p">)</span>
+        
+        <span class="n">C_user</span> <span class="o">=</span> <span class="mf">6.15</span>
+        
+        <span class="n">n0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span> <span class="n">C_user</span><span class="o">/</span><span class="mi">2</span> <span class="o">*</span> <span class="n">eta_0</span><span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+        
+        <span class="n">Plume</span> <span class="o">=</span> <span class="n">SSM</span><span class="p">(</span><span class="n">Plasma</span><span class="p">,</span><span class="mi">40</span><span class="p">,</span><span class="mf">0.2</span><span class="p">,</span><span class="n">Z_span</span><span class="p">,</span><span class="n">eta_0</span><span class="p">,</span><span class="n">n0</span><span class="p">)</span> <span class="c">#creation of SSM plume object</span>
+        
+        <span class="n">Plume</span><span class="o">.</span><span class="n">solver</span><span class="p">()</span> <span class="c">#good call on SSM method self.solver</span>
+        
+        <span class="n">z</span><span class="p">,</span><span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">5000</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">5000</span><span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertRaises</span><span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="n">Plume</span><span class="o">.</span><span class="n">solver</span><span class="p">,</span> <span class="n">args</span> <span class="o">=</span> <span class="p">(</span><span class="n">z</span><span class="p">,</span><span class="n">r</span><span class="p">))</span> <span class="c">#wrong call on self.solver method leads to exception error</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsNotNone</span><span class="p">(</span><span class="n">Plume</span><span class="o">.</span><span class="n">nu_prime_interp</span><span class="p">)</span> <span class="c">#checking performance of self.solver method in storing plume variables</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsNotNone</span><span class="p">(</span><span class="n">Plume</span><span class="o">.</span><span class="n">h_interp</span><span class="p">)</span> <span class="c">#checking trakcking of self-similar dilation function h and dh</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">Plume</span><span class="o">.</span><span class="n">C</span><span class="p">,</span><span class="n">C_user</span><span class="p">,</span><span class="n">places</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="c">#Testing model-calculated dimensioning constant C with user-given constant C up to three decimal places</span>
+        
+        
+    <span class="k">def</span> <span class="nf">test_upsilon_compare</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        
+        <span class="sd">&quot;&quot;&quot; Comparison between SSM general framework developed in Python code, and theoretical plume profiles&quot;&quot;&quot;</span>
+        
+        <span class="n">P</span> <span class="o">=</span> <span class="n">Hyperplume</span><span class="p">()</span><span class="o">.</span><span class="n">simple_plasma</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+        
+        <span class="n">Z_span</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">100</span><span class="p">,</span><span class="mi">500</span><span class="p">)</span>
+        
+        <span class="n">eta_0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">40</span><span class="p">,</span><span class="mi">500</span><span class="p">)</span>
+        
+        <span class="n">n0_parks</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mf">0.05</span><span class="p">)</span><span class="o">*</span><span class="n">eta_0</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="c">#Initial density profile for a Parks-type SSM plume</span>
+        
+        <span class="n">upsilon_parks</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">eta_0</span><span class="o">.</span><span class="n">size</span><span class="p">)</span> <span class="c">#Initial dimensionless axial velocity  profile for a Parks-type SSM plume</span>
+        
+        <span class="n">Plume</span> <span class="o">=</span> <span class="n">SSM</span><span class="p">(</span><span class="n">P</span><span class="p">,</span><span class="mi">40</span><span class="p">,</span><span class="mf">0.2</span><span class="p">,</span><span class="n">Z_span</span><span class="p">,</span><span class="n">eta_0</span><span class="p">,</span><span class="n">n0_parks</span><span class="p">)</span>
+        
+        <span class="n">Plume</span><span class="o">.</span><span class="n">solver</span><span class="p">()</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">Plume</span><span class="o">.</span><span class="n">upsilon_interp</span><span class="p">(</span><span class="mi">3</span><span class="p">)),</span><span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">upsilon_parks</span><span class="p">)),</span><span class="n">places</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="c">#comparing model returned upsilon profile, with theoretical upsilon profile</span>
+        
+        
+    <span class="k">def</span> <span class="nf">test_query</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        
+        <span class="sd">&quot;&quot;&quot;Assertiveness of method query inside SSM plume class&quot;&quot;&quot;</span>
+        
+        <span class="n">P</span> <span class="o">=</span> <span class="n">Hyperplume</span><span class="p">()</span><span class="o">.</span><span class="n">simple_plasma</span><span class="p">(</span><span class="mf">1.6e-19</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mf">1.5</span><span class="p">,</span><span class="mf">1.4</span><span class="p">)</span>
+        
+        <span class="n">Z_span</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">100</span><span class="p">,</span><span class="mi">50</span><span class="p">)</span>
+        
+        <span class="n">eta_0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">40</span><span class="p">,</span><span class="mi">50</span><span class="p">)</span>
+        
+        <span class="n">n0</span> <span class="o">=</span>  <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mf">0.05</span><span class="o">*</span><span class="n">eta_0</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+        
+        <span class="n">Plume</span> <span class="o">=</span> <span class="n">SSM</span><span class="p">(</span><span class="n">P</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mf">0.2</span><span class="p">,</span><span class="n">Z_span</span><span class="p">,</span><span class="n">eta_0</span><span class="p">,</span><span class="n">n0</span><span class="p">)</span>
+        
+        <span class="n">Plume</span><span class="o">.</span><span class="n">solver</span><span class="p">()</span>
+        
+        <span class="n">z_target</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">15</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">25</span><span class="p">,</span><span class="mi">30</span><span class="p">])</span>
+        
+        <span class="n">r_target</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">20</span><span class="p">,</span><span class="mi">25</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="mi">35</span><span class="p">])</span>
+        
+        <span class="n">Z_target</span><span class="p">,</span><span class="n">R_target</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">z_target</span><span class="p">,</span><span class="n">r_target</span><span class="p">)</span>
+        
+        <span class="n">n</span><span class="p">,</span><span class="n">u_z</span><span class="p">,</span><span class="n">u_r</span><span class="p">,</span><span class="n">T</span><span class="p">,</span><span class="n">phi</span><span class="p">,</span><span class="n">error</span><span class="p">,</span><span class="n">etaSSM</span> <span class="o">=</span> <span class="n">Plume</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">Z_target</span><span class="p">,</span><span class="n">R_target</span><span class="p">)</span> <span class="c">#calling method query</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsNotNone</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="c">#checking performance of self.query method based on returned varables</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsNotNone</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span><span class="n">Z_target</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span><span class="n">R_target</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="c">#checking performance of self.method based on targeted poins inputted by user</span>
+        
+    <span class="k">def</span> <span class="nf">test_types</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        
+        <span class="sd">&quot;&quot;&quot; Checking theoretical Parks,Ashkenazy and Korsun model plume creation&quot;&quot;&quot;</span>
+        
+        <span class="n">P</span> <span class="o">=</span> <span class="n">Hyperplume</span><span class="p">()</span><span class="o">.</span><span class="n">simple_plasma</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+        
+        <span class="n">Z_span</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">100</span><span class="p">,</span><span class="mi">500</span><span class="p">)</span>
+        
+        <span class="n">eta_0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">40</span><span class="p">,</span><span class="mi">500</span><span class="p">)</span>
+        
+        <span class="n">Plume</span> <span class="o">=</span> <span class="n">type_parks</span><span class="p">()</span>
+        
+        <span class="n">Plume1</span> <span class="o">=</span> <span class="n">type_parks</span><span class="p">(</span><span class="n">P</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="mf">0.3</span><span class="p">,</span><span class="n">Z_span</span><span class="p">,</span><span class="n">eta_0</span><span class="p">,</span><span class="mf">0.5</span><span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsNotNone</span><span class="p">(</span><span class="n">Plume</span><span class="p">,</span><span class="n">Plume1</span><span class="p">)</span> <span class="c"># test type_ interface.</span>
+        
+        <span class="n">P1</span> <span class="o">=</span> <span class="n">Hyperplume</span><span class="p">()</span><span class="o">.</span><span class="n">simple_plasma</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mf">1.4</span><span class="p">)</span>
+        
+        <span class="n">Plume2</span> <span class="o">=</span> <span class="n">type_parks</span><span class="p">(</span><span class="n">P1</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="mf">0.3</span><span class="p">,</span><span class="n">Z_span</span><span class="p">,</span><span class="n">eta_0</span><span class="p">,</span><span class="mf">0.5</span><span class="p">)</span>
+        
+        <span class="n">Plume3</span> <span class="o">=</span> <span class="n">type_korsun</span><span class="p">(</span><span class="n">P1</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="mf">0.3</span><span class="p">,</span><span class="n">Z_span</span><span class="p">,</span><span class="n">eta_0</span><span class="p">,</span><span class="mf">0.5</span><span class="p">)</span>
+        
+        <span class="n">Plume4</span> <span class="o">=</span> <span class="n">type_ashkenazy</span><span class="p">(</span><span class="n">P1</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="mf">0.3</span><span class="p">,</span><span class="n">Z_span</span><span class="p">,</span><span class="n">eta_0</span><span class="p">,</span><span class="mf">0.5</span><span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsNone</span><span class="p">(</span><span class="n">Plume2</span><span class="p">,</span><span class="n">Plume4</span><span class="p">)</span> <span class="c"># test validity of Gamma value for the different plume types.</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsNotNone</span><span class="p">(</span><span class="n">Plume3</span><span class="p">)</span>
+        
+        <span class="n">nu</span> <span class="o">=</span> <span class="n">nu</span> <span class="o">=</span>  <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mf">0.047</span> <span class="o">*</span> <span class="n">eta_0</span><span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertRaises</span><span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span><span class="n">Plume5</span> <span class="o">=</span> <span class="n">type_parks</span><span class="p">,</span> <span class="n">args</span> <span class="o">=</span><span class="p">(</span><span class="n">P1</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="mf">0.3</span><span class="p">,</span><span class="n">Z_span</span><span class="p">,</span><span class="n">eta_0</span><span class="p">,</span><span class="mf">0.5</span><span class="p">,</span><span class="n">nu</span><span class="p">))</span> <span class="c"># for type_ plumes, initial density profile is not an input</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Python Plume Code Documentation</a><ul>
+<li><a class="reference internal" href="#general-structure-of-code-suite">General structure of Code suite</a></li>
+<li><a class="reference internal" href="#hiperplume-parent-class-and-methods">HIPERPLUME parent class and methods</a></li>
+<li><a class="reference internal" href="#aem-class-and-methods">AEM class and methods</a></li>
+<li><a class="reference internal" href="#ssm-class-and-methods">SSM class and methods</a></li>
+<li><a class="reference internal" href="#code-testing-suite">Code testing suite</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="Theory.html"
+                        title="previous chapter">Understanding Plume Expansions</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="Simulations.html"
+                        title="next chapter">Plume Expansion Code Tutorials</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/Code.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="Simulations.html" title="Plume Expansion Code Tutorials"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="Theory.html" title="Understanding Plume Expansions"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">HyperPlume 1.0.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2017, Pablo Moreno.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+    </div>
+  </body>
+</html>

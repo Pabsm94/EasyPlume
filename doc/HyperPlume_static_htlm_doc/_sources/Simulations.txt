@@ -1,0 +1,28 @@
+Plume Expansion Code Tutorials
+==============================
+In this section examples of plume creation and characterization are presented from a programming perspective. 
+Sample code snippets are provided and used as quick guides on how to use HyperPlume class and methods to model plume expansions and retrieve useful results. 
+
+AEM Plume creation and Characterization
+---------------------------------------
+
+.. literalinclude:: simulations.py	
+   :language: python
+   :start-after: start AEM
+   :end-before: end AEM
+
+SSM Plume creation and Characterization
+---------------------------------------
+
+.. literalinclude:: simulations.py	
+   :language: python
+   :start-after: start SSM
+   :end-before: end SSM
+
+Plume Comparisons
+-----------------
+
+.. literalinclude:: simulations.py	
+   :language: python
+   :start-after: start comp
+   :end-before: end comp

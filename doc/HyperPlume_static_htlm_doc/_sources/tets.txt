@@ -1,0 +1,557 @@
+Code Documentation
+==================
+
+Hyperplume class
+---------------
+
+class Hyperplume():
+
+	""" Parent class Hyperplume loads target plasma and defines common attributes as well as shared methods in the AEM and SSM plume classes"""
+    
+    def solver(self):
+        
+        """Solver Abstract Method to be particularised by each Plume code. It is only defined for structure purposes in parent class Hyperplume"""
+        
+    def query(self,z,r):
+        
+        """Query abstract method returns plasma profile data at specified grid points. query method is to be particularised by each plume code.It is only defined forstructure purposes in parent class Hyperplume"""
+         
+    def __init__(self,plasma,z_span,r_span,n_init):
+        
+        """ plume_constructor loads common class properties for AEM and SSM plume classes """
+        
+        Args:
+            :plasma (dict): simple_plasma object dictionary containing basic plasma parameters.
+            :z_span (numpy.ndarray): axial region where the problem will be integrated.
+            :r_span (numpy.ndarray): initial far-field plasma radial profile.
+            :n_init (numpy.ndarray): initial dimensional density front.
+        		
+        Usage:
+            >>> Plasma = {'Electrons': {'Gamma': 1,'T_0_electron': 2.1801714e-19,'q_electron': -1.6e-19},'Ions': {'mass_ion': 2.1801714e-25, 'q_ion': 1.6e-19}}
+            >>> z_span = np.linspace(0,100,100)
+            >>> r0 = np.linspace(0,3,100)
+            >>> n0 = np.exp(-6.15/2*r_span**2)
+            >>> Plume = Hyperplume(Plasma,z_span,r0,n0)
+        
+      
+    def simple_plasma(self,charge,ion_mass,init_plasma_temp,Gamma):
+        
+        """ Method simple_plasma allows the user to quickly create a Plasma dictionary with two particle species (ions and electrons), 
+        and well defined attributes."""
+        
+        Args:
+            :charge (float): Electron charge given dimensional in units [C]
+            :ion_mass (float): Ion mass given in dimensional units [Kg]
+            :init_plasma_temp (float): Initial plasma temperature given in dimensional units [J]
+            :Gamma (int or float): Dimensionless thermal expansion constant. Must be inside isothermal and polytropic boundaries [1,5/3]
+        
+        Returns:
+            :plasma (dict): Dictionary containing two simple plasma species (ions and electrons) with the before mentioned
+                       	   properties stored in favorable form.
+        Usage:             
+            >>> Plasma = Hyperplume().simple_plasma(charge=1.6e-19,
+		ion_mass=2.1801714e-25,,init_plasma_temp=2.1801714e-19,Gamma=1)
+            
+        
+        
+    def temp(self,n,n_0,T_0,Gamma):
+        
+        """ Method temp calculates plasma temperature  as function of plasma density."""
+        
+        Args:
+            :n (int or np.ndarray): plasma density at specific (z,r) location in the plume grid	
+            :n_0 (int):Iinitial density of plasma
+            :T_0 (float): Initial temperature of plasma
+            :Gamma (int): Dimensionless thermal expansion constant
+        
+        Returns:
+            :T (float or np.ndarray): Temperature of plasma at targeted (z,r) grid points in plume
+            
+        Usage:
+            >>> T = Hyperplume().temp(n=0.65,n_0=1,T_0=2.1801714e-19,Gamma=1)
+        
+            
+    def phi (self,n,n_0,T_0,Gamma,e_charge):
+        
+        """Method phi calculates electric potential as function of plasma density."""
+        
+        Args:
+	    :n(int or np.ndarray): plasma density at specific (z,r) location in the plume grid
+            :n_0 (int):Iinitial density of plasma
+            :T_0 (float): Initial temperature of plasma
+            :Gamma (int): Dimensionless thermal expansion constant
+            :e_charge (float):Electron charge
+             
+        Returns:
+            :phi(float or np.ndarray): Electric potential of plasma at (z,r) targeted grid point
+             
+        Usage:
+             >>> phi = Hyperplume().phi(n=0.65,n_0=1,T_0=2.1801714e-19,
+	         Gamma=1,e_charge=-1.6e-19)
+             
+         
+        
+    def n(self,n_0,T_0,phi,Gamma,e_charge):
+        
+        """Method n calculates plasma density as function of plasma potential """ 
+        
+         Args:
+            :n_0 (int):Iinitial density of plasma
+            :T_0 (float): Initial temperature of plasma
+            :Gamma (int): Dimensionless thermal expansion constant
+            
+            :e_charge (float):Electron charge
+         Returns:
+            :n (float or numpy.ndarray): Pasma density at (z,r) targeted grid point in the plume.
+             
+         Usage:
+             >>> n = Hyperplume.n(n_0=1,T_0=2.1801714e-19,phi=-5.7
+	         Gamma=1,e_charge=-1.6e-19)
+         
+        
+    def eta_deriver(self,x,y):
+        
+        """Method eta_derivar calculates the numerical derivatives of the variables along eta, with a central finite difference approach"""
+
+        Args: 
+            :x (np.ndarray): represents the derivative step (dx,dy)
+            :y (np.ndarray): vector to derive with respect to x
+        
+        Returns:
+            :y_prime (np.ndarray): derivative of y over x  stored in array format
+            
+        Usage:
+            >>> x = np.array([0,0.5,1,1.2,2,2.3,2.6])
+            >>> y = np.array([10,17,23,27,36,40,45])
+            >>> dydx = Hyperplume.eta_deriver(x,y)
+
+        
+    def plot(self,z,r,var_name,contour_levels):
+        
+        """ Hyperplume Class method to plot the contours of important plasma variables along the specified (z,r) plume grid points"""
+        
+        Args:
+        
+            :z (int,float, or np.ndarray): new interpolation axial region where plasma variabes are to be calculated and plotted. Must be inside z_grid limits
+            :r (int,float, or np.ndarray): new interpolation axial region where plasma variabes are to be calculated and plotted. Must be inside z_grid limits   
+            :var_name (str): string containing the name of the variable to be visualized. Options are:
+                            'lnn': logarithm of plasma density 
+                            'u_z': axial plume velocity
+                            'u_r':radial plume velocity
+                            'T': plasmaTemperature
+                            'phi':  ambipolar electric field
+                            'eta': ion stream lines
+            contour_levels (array or of list): contour lables of plasma varialbled at the targets z,r points.
+            
+        Usage:
+            >>> Plasma = Hyperplume().SIMPLE_plasma()
+            >>> Plume = AEM()
+     	    >>> Plume.plot(z=np.array([15,20,25,30]),r=np.array([20,25,30,35]),
+	        var_name='n',contour_levels=[0,1,2,3,4,5,6,7,8])
+
+SSM Class 
+---------
+
+class SSM(Hyperplume):
+    
+    """Self Similar model of a plasma plume expansion.Class SSM inherits methods __init__,solver 
+    and query from parent class Hyperplume, and particularizes them."""
+    
+    
+    
+    def __init__(self,plasma,M_0,d_0,z_span,r_span,n_init):
+        
+        """Constructor __init__ loads and initialises the main class attributes.
+        Calls parent class Hyperplume constructor method __init__ to store main plasma properties as attributes in the class."""
+        
+        Args:
+            :plasma (dict): simple_plasma object dictionary containing basic plasma parameters.
+            :z_span (numpy.ndarray): axial region where the problem will be integrated.
+            :r_span (numpy.ndarray): initial far-field plasma radial profile.
+            :n_init (numpy.ndarray): initial dimensional density front.
+            :M_0 (float): Plasma Mach number at (z,r) = (0,0)
+            :d_0 (float): Tangent of initial plume divergence angle
+            
+        Implementation:
+            >>> e_charge,ion_mass =1.6e-19,2.1801714e-25
+            >>> Plasma_temp,gamma_value = 2.1801714e-19,1
+            >>> Plasma = Hyperplume().simple_plasma(e_charge,ion_mass,
+		Plasma_temp,gamma_value) 
+            >>> z_span = np.linspace(0,110,5000) 
+            >>> r_0 = np.linspace(0,10,5000) 
+            >>> n0 =  np.exp(-6.15/2 * r_0**2) 
+            >>> M0,d0=20,0.2 
+            >>> Plume = SSM(Plasma,M0,d0,z_span,r_0,n0) 
+                
+    def solver(self):
+        
+        """Solver method solves for model constriants C and h, as well as  the initial dimensionless axial velocity vector upsilon 
+        and initial dimensionless density profile nu, using SSM model equations. It then saves this plume variables as as class attributes,
+        in the form of interpolation libraries over the entire plume grid.
+        
+        Solver method is a particularization of the abstrac Hyperplume.solver() method """
+        
+        Implementation:
+            
+            >>> Plume.solver() 
+
+	"""Important variables in solver method""" 
+
+	:C (float): SSM model separation constraint 
+	:h_interp (function): SSM dilation function interpolation library
+	:dh_interp (function): Derivative of SSM dilation function h
+	:nu_interp (function): Dimensionless plasma density function
+	:nu_prime_interp (function): Derivative of Dimensionless plasma density function
+        :upsilon_interp (function): Dimensionless plume axial velocity interpolation library
+
+        """To access the interpolation libraries and SSM constraints particularly:"""
+        
+            >>> print(Plume.C,Plume.h) 
+	    >>> eta_target = 0.8	
+            >>> Plume.nu_interp(eta_target)
+            >>> Plume.upsilon_interp(eta_target)
+
+    	def dh_fun(h,Z):
+            
+            """dh_fun function calculates the derivative of the self-similar dilation function h(z), 
+            and saves the results as a class attribute in column-array format """
+            
+            Args:
+                :h (numpy.ndarray): SSM model scaling function
+                :Z (numpy.ndarray): axial span for integration. Coincidet with initial axial span loaded in SSS 
+                                                                class constructor,for accruacy and correctness)
+            Returns:
+                :dh (numpy.ndarray): derivative of SSM scaling function
+                
+          
+
+    def query(self,z,r):
+        
+        """ Method query returns the density, velocity profile, temperature, the electric potential and SSM error at
+        particular (z,r) points by interpolation over the Plume grid.
+        SSM method query is a particulatization of the abstract Hyperplume method Hyperplume.query()"""
+        
+        Args:
+            :z (int,numpy.ndarray): axial target points where plasma variables are retrieved. Single points, arrays of locations and meshgrids are valid.
+            :r (int,numpy.ndarray): axial target points where plasma variables are retrieved. Single points, arrays of locations and meshgrids are valid.
+        
+        Returns:
+            :lnn (int,numpy.ndarray): logarithmic plasma density at specified (z,r) points in plume grid
+            :u_z (int,numpy.ndarray): plasma axial velocity at specified (z,r) points in plume grid
+            :u_r (int,numpy.ndarray): plasma radial velocity at specified (z,r) points in plume grid
+            :T (int,numpy.ndarray): plasma temperature at specified (z,r) points in plume grid
+            :phi (int,numpy.ndarray): plasma ambipolar electric potential at specified (z,r) points in plume grid
+            :error (int,numpy.ndarray): SSM error created by imposing model constraints at specified (z,r) points in plume grid
+            :eta (int,numpy.ndarray): ion current stream lines at specified (z,r) points in plume grid
+            
+        Usage:
+            >>> z,r = np.linspace(0,100,50),np.linspace(0,50,40) 
+            >>> lnn,u_z,u_r,T,phi,error,eta=Plume.query(z,r)
+            
+
+    def type_parks(plasma,M_0,d_0,z_span,r_0,C):
+
+	    """ type_parks functions allow the user to generate default plume density profiles based on the theoretical 
+	    Parks plume model. The function creates the initial density profile following
+	    the theoretical model, and creates a SSM Plume object with unique characteristics"""
+
+	    Args:
+		:plasma (dict): Hyperplume's simple_plasma object, or otherwise a similar plasma dictionary containing basic parameters.
+		:z_span (numpy.ndarray): axial region where the problem will be integrated.
+		:r_0 (numpy.ndarray): initial far-field plasma radial profile.
+		:M_0 (float): Plasma Mach number at (z,r) = (0,0)
+		:d_0 (float): Tangent of initial plume divergence angle
+		:C (float): SSM model constraint. C is a separation constant used for scaling the Self-Similarity plume proble.
+			   C is used to determine the initial density profile derived by Parks. 
+			   In particular: 
+			   	* n_parks = np.exp(-C*r_0**2 /2)
+	   Returns:
+	       :Plume (object): SSM Plume object preloaded and solved with Parks theoretical density and axial velocity models.
+
+	   Usage:
+	       >>> Plasma = Hyperplume().simple_plasma(e_charge,ion_mass,
+	           Plasma_temp,gamma_value) 
+	       >>> z_span = np.linspace(0,110,5000) 
+	       >>> r_0 = np.linspace(0,10,5000)
+	       >>> C = 6.15
+	       >>>Plume_parks = type_parks(Plasma,z_span,r_0,C)
+	       >>> lnn,u_z_,u_r,T,phi,error,eta=Plume_parks.query(z,r)
+        
+        
+    def type_korsun(plasma,M_0,d_0,Z_span,r_0,C):
+
+	    """ type_parks functions allow the user to generate default plume density profiles based on the theoretical 
+	    Korsun plume model. The function creates the initial density profile following
+	    the theoretical model, and creates a SSM Plume object with unique characteristics"""
+
+	    Args:
+		:plasma (dict): Hyperplume's simple_plasma object, or otherwise a similar plasma dictionary containing basic parameters.
+		:z_span (numpy.ndarray): axial region where the problem will be integrated.
+		:r_0 (numpy.ndarray): initial far-field plasma radial profile.
+		:M_0 (float): Plasma Mach number at (z,r) = (0,0)
+		:d_0 (float): Tangent of initial plume divergence angle
+		:C (float): SSM model constraint. C is a separation constant used for scaling the Self-Similarity plume problem.
+			   C is used to determine the initial density and axial velocity profiles derived by Korsun.
+			   In particular:
+			   	* n_parks = 1 / (1 + C / 2 * r_0**2 )
+			   	* upsilon_parks = (1 + C / 2 * r_0**2 )**(gamma/2)
+
+	   Returns:
+	       :Plume (object): SSM Plume object preloaded and solved with Parks theoretical density and axial velocity models.
+
+	   Usage:
+	       >>> Plasma = Hyperplume().simple_plasma(e_charge,ion_mass,
+                   Plasma_temp,gamma_value) 
+	       >>> z_span = np.linspace(0,110,5000) # Axial plume grid for integration
+	       >>> r_0 = np.linspace(0,10,5000) #Initial plume radial profile
+	       >>> C = 6.15
+	       >>>Plume_korsun = type_korsun(Plasma,z_span,r_0,C)
+	       >>> lnn,u_z_,u_r,T,phi,error,eta=Plume_korsun.query(z,r)
+
+    def type_ashkenazy(plasma,M_0,d_0,Z_span,r_0,C):
+
+	    """ type_ashkenazy functions allow the user to generate default plume density profiles based on the theoretical 
+	    ashkenazy plume model. The function creates the initial density profile following
+	    the theoretical model, and creates a SSM Plume object with unique characteristics"""
+
+	    Args:
+		:plasma (dict): Hyperplume's simple_plasma object, or otherwise a similar plasma dictionary containing basic parameters.
+		:z_span (numpy.ndarray): axial region where the problem will be integrated.
+		:r_0 (numpy.ndarray): initial far-field plasma radial profile.
+		:M_0 (float): Plasma Mach number at (z,r) = (0,0)
+		:d_0 (float): Tangent of initial plume divergence angle
+		:C (float): SSM model constraint. C is a separation constant used for scaling the Self-Similarity plume problem.
+			   C is used to determine the initial density profile derived by Ashkenazy. 
+			   In particular:
+			   	* n_parks = (1 + k*r_0**2)**(-C/(2*k))
+			   	* upsilon_parks = (1 + k*r_0**2)**(-1/2), where k = d_0**2
+
+	   Returns:
+	       :Plume (object): SSM Plume object preloaded and solved with Parks theoretical density and axial velocity models.
+
+	   Usage:
+	       >>> Plasma = Hyperplume().simple_plasma(e_charge,ion_mass,
+		   Plasma_temp,gamma_value) 
+	       >>> z_span = np.linspace(0,110,5000) 
+	       >>> r_0 = np.linspace(0,10,5000) 
+	       >>> C = 6.15
+	       >>>Plume_ashk = type_ashkenazy(Plasma,z_span,r_0,C)
+	       >>> lnn,u_z_,u_r,T,phi,error,eta=Plume_ashk.query(z,r)
+
+
+
+AEM Class 
+---------    
+
+class AEM(Hyperplume):
+    
+    """Asymptotic Expansion Model of a plasma plume expansion.Class AEM inherits methods  from 
+    parent class Hyperplume, and particularizes them.All initial inputs must be given in dimensional form."""
+    
+    def __init__(self,plasma,z_span,r_span,n_init,uz_init,ur_init,sol_order):
+        
+        """ Class method __init__ is used as class constructor. Calls parent class Hyperplume constructor method __init__ to 
+        store main plasma properties as attributes in the class."""
+        
+        Args:
+            :plasma (dict): simple_plasma object dictionary containing basic plasma parameters.
+            :z_span (numpy.ndarray): axial region where the problem will be integrated.
+            :r_span (numpy.ndarray): initial far-field plasma radial profile.
+            :n_init (numpy.ndarray): initial far-field plum density front.
+            :uz_init (numpy.ndarray): initial far-region plume axial velocity profile
+            :ur_init (numpy.ndarray): initial fr-region plume radial velocity profile
+            :sol_order (int): Integer defining the AEM correction order for the plume integration.
+                            -0: AEM "cold beam" zeroth order solution
+                            -1: AEM first order correction
+                            -2: Second Order Correction
+                            
+        Usage:
+            >>> e_charge,ion_mass = 1.6e-19 
+            >>> Plasma_temp,gamma_value= 2.1801714e-25,2.1801714e-19,1
+            >>> Plasma = Hyperplume().simple_plasma(e_charge,ion_mass,
+		Plasma_temp,gamma_value)
+            >>> z_span = np.linspace(0,110,5000)
+            >>> r_0 = np.linspace(0,10,5000) 
+            >>> n0 =  np.exp(-6.15/2 * r_0**2) 
+            >>> uz0,ur0  = np.linspace(20000,20000,100),np.linspace(0,40000,100) 
+            >>> AEM_Order = 2 # AEM model solution
+            >>> PlumeAEM = AEM(Plasma,z_span,eta_0,n0,uz0,ur0,AEM_Order) 
+        
+        """Other important class attributes loaded in the AEM constructor are:"""
+            :d0 (numpy.ndarray): far field initial divergence ur0/uz0.
+            :d0p (numpy.ndarray): derivative of plume initial divergence
+            :eps (float): AEM expansion parameter 1/M_{0}^{2}
+            :uz0p (numpy.ndarray): derivative of initial far region axial velocity
+            :duz0p (numpy.ndarray): derivative of initial far region radial velocity
+            :z_grid,r_grid (numpy.ndarray): Plume grids where AEM problem is integrated
+            
+        To access these attributes, for instance:
+            >>> print(PlumeAEM.d0)
+            >>> print(PlumeAEM.eps)
+        
+
+def solver(self):
+        
+        """ Class method Solver integrates the AEM model equations in the specified plume grid. The method stores the different order
+        plasma properties in matrixes of size (mxn), where m,n are the number of z,r points,respectively.Porperties such as
+        density,temperature,electric field,etc are calculated and saved as attributes of the class in this matrix form."""
+        
+        Usage:
+            >>> PlumeAEM = AEM(Plasma,z_span,eta_0,n0,uz0,ur0,AEM_Order) #Creation of AEM plume
+            >>> PlumeAEM.solver() # be sure to create a valid AEM plasma plume before applying the plume solver method
+        
+        """Main Plume properties solved and saved by the method as class attributes:"""
+            :lnn (numpy.ndarray): 3-D matrix containing density values (logarithmic) for the three possible AEM solution orders.
+            :uz (numpy.ndarray): 3-D matrix containing axial velocity values for the three possible AEM solution orders.
+            :ur (numpy.ndarray): 3-D matrix containing radial velocity values for the three possible AEM solution orders.
+            :T (numpy.ndarray): 3-D matrix containing plasma Temperature values for the three possible AEM solution orders.
+            :phi (numpy.ndarray):3-D matrix containing plasma ambipolar electric field for the three possible AEM solution orders.
+            :div (numpy.ndarray): 3-D matrix containing plume divergence values for the three possible AEM solution orders.
+            :eta_ (int,numpy.ndarray): 3-D matrix containing ion current streamlines for the three possible AEM solution orders.
+       
+            >>> PlumeAEM.lnn[0,:,:] # density values for Zeroth Order AEM
+            >>> PlumeAEM.uz[1,:,:] # axial velocity First Order AEM 
+            >>> PlumeAEM.T[2,:,:] # Temperature values for Second Order AEM 
+        
+
+def marching_solver(self,nsects):
+        
+        """Marching schem AEM plume solver.AEM Class method marching_solver solves extends the AEM solution downstream by
+        reinitializing the method at each new calculated plasma plume front, (r0_front,z0_front,uz0_front,n0_front)
+        preventing excessive error growth in the calculations and widening the convergence region of thr AEM model.
+        
+        Marching_solver method reinitializes the plume initial parameter, with the values calculated in the previous 
+        integration step, as many times as indicated by the user in nsects. It then solves the plume expansion incrementally
+        by callling the solver method multiple times."""
+        
+        Args:
+           :nsects (int): number of axial sections or steps (plume fronts), where solver reinitializes the
+                          model and integrates the solution agin.
+        Usage:
+            >>> PlumeAEM = AEM(Plasma,z_span,eta_0,n0,uz0,ur0,AEM_Order) #Creation of AEM plume
+            >>> Plume.marching_solver(nsects=100)
+            
+        """Same Plasma attributes from standard solver can be accessed in Method marching_solver, but in this case the method stores only the 
+        ith higher order correction specified by the user at plume creation with the input argument sol_order:"""
+        
+            :lnn (numpy.ndarray): matrix containing density values (logarithmic) for the selected AEM solution order.
+            :uz (numpy.ndarray): matrix containing axial velocity values for the selected AEM solution order.
+            :ur (numpy.ndarray): matrix containing radial velocity values for the selected AEM solution order.
+            :T (numpy.ndarray): matrix containing plasma Temperature values for the selected AEM solution order.
+            :phi (numpy.ndarray): matrix containing plasma ambipolar electric field for the selected AEM solution order.
+            :div (numpy.ndarray): matrix containing plume divergence values for the selected AEM solution order.
+            
+            >>> PlumeAEM.lnn # density values for AEM ith order solution of plume expansion in the grid
+            >>> PlumeAEM.uz # axial velocity for AEM ith order solution
+            >>> PlumeAEM.T # Temperature values for AEM ith order solution
+        
+
+def query(self,z,r):
+        
+        """ Method query returns the density, velocity profile, temperature, the electric potential at
+        particular (z,r) points in the Plume.
+        
+        These plasma properties are interpolated along the previously calculated 2D grids z_grid and r_grid 
+        at targeted (z,r) points specified by the user. User must always check if np.max(r) > np.max(self.r_grid),
+        np.max(z) > np.max(self.z_grid) in their query point set,to avoid extrapolation results."""
+        
+        Args:
+            :z (float,numpy.ndarray): new interpolation z points.
+            :r (float,numpy.ndarray): new interpolation r points.
+        
+        Outputs:
+            :lnn (int,numpy.ndarray): logarithmic plasma density at specified (z,r) points in plume grid
+            :u_z (int,numpy.ndarray): plasma axial velocity at specified (z,r) points in plume grid
+            :u_r (int,numpy.ndarray): plasma radial velocity at specified (z,r) points in plume grid
+            :T (int,numpy.ndarray): plasma temperature at specified (z,r) points in plume grid
+            :phi (int,numpy.ndarray): plasma ambipolar electric potential at specified (z,r) points in plume grid
+            :eta (int,numpy.ndarray): ion current stream lines at specified (z,r) points in plume grid
+            
+        Usage:
+            >>> z,r = np.linspace(0,100,50),np.linspace(0,50,40) #target (z,r) for plume query
+            >>> lnn,u_z,u_r,T,phi,eta=PlumeAEM.query(z,r)
+
+def grid_setup(self,zpts,epts):
+        
+        """ grid_setup creates an strctured grid of z,r points where the AEM problem will be integrated """
+        
+        Args:
+            :zpts (int): number of axial points in the structure. Indicates legnth oof axial plume span
+            :epts (int): number of radial points in the structure. Indicates legnth of radial plume span
+            
+        Returns:
+            :z_grid (numpy.ndarray): 2D matrix containing axial grid points for model integration
+            :r_grid (numpy.ndarray): 2D matrix containing radial grid points for model integration
+            
+        Usage:
+            >>> z_grid,r_grid = PlumeAEM.grid_setup(100,50)
+       
+def val_domain(self):
+        
+        """val_domain class method evaluates the validity of the AEM series expansion  solution
+        at z_grid and r_grid points in the plume. Validity results for each AEM order
+        are stored  in the 3D matrix Plume.val. These matrix is filled with values indicating a specific validity condition
+        in the results.
+        
+        Validity Values
+            * 0 - Not valid for both velocity and density
+            * 1 - Valid only for velocity
+            * -1 - Valid only for density
+            * 2 - Valid for both velocity and density
+            
+	"""        
+            
+        Usage:
+            >>> PlumeAEM.val_domain() #Intialize validity condition study
+            >>> print(Plume.val) #See results of validation 
+        
+
+def partial_derivs(self,var,type2):
+        
+        """Class method partial_derivs computes the partial derivatives of plasma variables with respect to 
+        the physical z,r at the plume grid points."""
+        
+        Args:
+            :var (numpy.ndarray): Variable values to derive at z,r grid points
+            :type2 (int): Integer defining the behaviour of the derivative at the borders and therefore the Type of varible to be differentiated.
+        
+                   	  * 0: Symmetric function. Border derivative value is set to 0
+                   
+                   	  * -1: Anti-symmetric function. Forward finite difference is used for border derivative calculation.
+                   
+       Returns:
+           :dvar_dz (numpy.ndarray): z-partial derivative values of input argument var at the grid points
+           :dvar_dr (numpy.ndarray): r-partial derivative values of input argument var at the grid points
+           
+       Usage:
+           >>> dlnn0_dz,dlnn0dr = PlumeAEM.partial_derivs(Plume.lnn_0) #derivative of Zeroth order density correction
+       
+       
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    

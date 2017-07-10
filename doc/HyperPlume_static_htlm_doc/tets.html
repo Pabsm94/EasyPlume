@@ -1,0 +1,1123 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Code Documentation &mdash; HyperPlume 1.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="HyperPlume 1.0.0 documentation" href="index.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="index.html">HyperPlume 1.0.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="code-documentation">
+<h1>Code Documentation<a class="headerlink" href="#code-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="hyperplume-class">
+<h2>Hyperplume class<a class="headerlink" href="#hyperplume-class" title="Permalink to this headline">¶</a></h2>
+<p>class Hyperplume():</p>
+<blockquote>
+<div><blockquote>
+<div>&#8220;&#8221;&#8221; Parent class Hyperplume loads target plasma and defines common attributes as well as shared methods in the AEM and SSM plume classes&#8221;&#8220;&#8221;</div></blockquote>
+<p>def solver(self):</p>
+<blockquote>
+<div>&#8220;&#8221;&#8220;Solver Abstract Method to be particularised by each Plume code. It is only defined for structure purposes in parent class Hyperplume&#8221;&#8220;&#8221;</div></blockquote>
+<p>def query(self,z,r):</p>
+<blockquote>
+<div>&#8220;&#8221;&#8220;Query abstract method returns plasma profile data at specified grid points. query method is to be particularised by each plume code.It is only defined forstructure purposes in parent class Hyperplume&#8221;&#8220;&#8221;</div></blockquote>
+<p>def __init__(self,plasma,z_span,r_span,n_init):</p>
+<blockquote>
+<div><p>&#8220;&#8221;&#8221; plume_constructor loads common class properties for AEM and SSM plume classes &#8220;&#8221;&#8220;</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">plasma (dict):</th><td class="field-body">simple_plasma object dictionary containing basic plasma parameters.</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">z_span (numpy.ndarray):</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">axial region where the problem will be integrated.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">r_span (numpy.ndarray):</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">initial far-field plasma radial profile.</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">n_init (numpy.ndarray):</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">initial dimensional density front.</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt>Usage:</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">Plasma</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;Electrons&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;Gamma&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span><span class="s">&#39;T_0_electron&#39;</span><span class="p">:</span> <span class="mf">2.1801714e-19</span><span class="p">,</span><span class="s">&#39;q_electron&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.6e-19</span><span class="p">},</span><span class="s">&#39;Ions&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;mass_ion&#39;</span><span class="p">:</span> <span class="mf">2.1801714e-25</span><span class="p">,</span> <span class="s">&#39;q_ion&#39;</span><span class="p">:</span> <span class="mf">1.6e-19</span><span class="p">}}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">z_span</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">100</span><span class="p">,</span><span class="mi">100</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">r0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">100</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">n0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mf">6.15</span><span class="o">/</span><span class="mi">2</span><span class="o">*</span><span class="n">r_span</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Plume</span> <span class="o">=</span> <span class="n">Hyperplume</span><span class="p">(</span><span class="n">Plasma</span><span class="p">,</span><span class="n">z_span</span><span class="p">,</span><span class="n">r0</span><span class="p">,</span><span class="n">n0</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</div></blockquote>
+<p>def simple_plasma(self,charge,ion_mass,init_plasma_temp,Gamma):</p>
+<blockquote>
+<div><p>&#8220;&#8221;&#8221; Method simple_plasma allows the user to quickly create a Plasma dictionary with two particle species (ions and electrons),
+and well defined attributes.&#8221;&#8220;&#8221;</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">charge (float):</th><td class="field-body">Electron charge given dimensional in units [C]</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">ion_mass (float):</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">Ion mass given in dimensional units [Kg]</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">init_plasma_temp (float):</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">Initial plasma temperature given in dimensional units [J]</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Gamma (int or float):</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">Dimensionless thermal expansion constant. Must be inside isothermal and polytropic boundaries [1,5/3]</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt>Returns:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">plasma (dict):</th><td class="field-body">Dictionary containing two simple plasma species (ions and electrons) with the before mentioned
+properties stored in favorable form.</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt>Usage:</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">Plasma</span> <span class="o">=</span> <span class="n">Hyperplume</span><span class="p">()</span><span class="o">.</span><span class="n">simple_plasma</span><span class="p">(</span><span class="n">charge</span><span class="o">=</span><span class="mf">1.6e-19</span><span class="p">,</span>
+<span class="go">    ion_mass=2.1801714e-25,,init_plasma_temp=2.1801714e-19,Gamma=1)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</div></blockquote>
+<p>def temp(self,n,n_0,T_0,Gamma):</p>
+<blockquote>
+<div><p>&#8220;&#8221;&#8221; Method temp calculates plasma temperature  as function of plasma density.&#8221;&#8220;&#8221;</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><table class="first docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">n (int or np.ndarray):</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">plasma density at specific (z,r) location in the plume grid</td>
+</tr>
+</tbody>
+</table>
+<p class="last">:n_0 (int):Iinitial density of plasma
+:T_0 (float): Initial temperature of plasma
+:Gamma (int): Dimensionless thermal expansion constant</p>
+</dd>
+<dt>Returns:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">T (float or np.ndarray):</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">Temperature of plasma at targeted (z,r) grid points in plume</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt>Usage:</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">T</span> <span class="o">=</span> <span class="n">Hyperplume</span><span class="p">()</span><span class="o">.</span><span class="n">temp</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mf">0.65</span><span class="p">,</span><span class="n">n_0</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">T_0</span><span class="o">=</span><span class="mf">2.1801714e-19</span><span class="p">,</span><span class="n">Gamma</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</div></blockquote>
+<p>def phi (self,n,n_0,T_0,Gamma,e_charge):</p>
+<blockquote>
+<div><p>&#8220;&#8221;&#8220;Method phi calculates electric potential as function of plasma density.&#8221;&#8220;&#8221;</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><table class="first docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">n(int or np.ndarray):</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">plasma density at specific (z,r) location in the plume grid</td>
+</tr>
+</tbody>
+</table>
+<p class="last">:n_0 (int):Iinitial density of plasma
+:T_0 (float): Initial temperature of plasma
+:Gamma (int): Dimensionless thermal expansion constant
+:e_charge (float):Electron charge</p>
+</dd>
+<dt>Returns:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">phi(float or np.ndarray):</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">Electric potential of plasma at (z,r) targeted grid point</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt>Usage:</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">phi</span> <span class="o">=</span> <span class="n">Hyperplume</span><span class="p">()</span><span class="o">.</span><span class="n">phi</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mf">0.65</span><span class="p">,</span><span class="n">n_0</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">T_0</span><span class="o">=</span><span class="mf">2.1801714e-19</span><span class="p">,</span>
+<span class="go">    Gamma=1,e_charge=-1.6e-19)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</div></blockquote>
+<p>def n(self,n_0,T_0,phi,Gamma,e_charge):</p>
+<blockquote>
+<div><p>&#8220;&#8221;&#8220;Method n calculates plasma density as function of plasma potential &#8220;&#8221;&#8220;</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">:n_0 (int):Iinitial density of plasma
+:T_0 (float): Initial temperature of plasma
+:Gamma (int): Dimensionless thermal expansion constant</p>
+<p class="last">:e_charge (float):Electron charge</p>
+</dd>
+<dt>Returns:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">n (float or numpy.ndarray):</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">Pasma density at (z,r) targeted grid point in the plume.</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt>Usage:</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">n</span> <span class="o">=</span> <span class="n">Hyperplume</span><span class="o">.</span><span class="n">n</span><span class="p">(</span><span class="n">n_0</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">T_0</span><span class="o">=</span><span class="mf">2.1801714e-19</span><span class="p">,</span><span class="n">phi</span><span class="o">=-</span><span class="mf">5.7</span>
+<span class="go">    Gamma=1,e_charge=-1.6e-19)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</div></blockquote>
+</div></blockquote>
+<p>def eta_deriver(self,x,y):</p>
+<blockquote>
+<div><p>&#8220;&#8221;&#8220;Method eta_derivar calculates the numerical derivatives of the variables along eta, with a central finite difference approach&#8221;&#8220;&#8221;</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">x (np.ndarray):</th><td class="field-body">represents the derivative step (dx,dy)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">y (np.ndarray):</th><td class="field-body">vector to derive with respect to x</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt>Returns:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">y_prime (np.ndarray):</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">derivative of y over x  stored in array format</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt>Usage:</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mf">0.5</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mf">1.2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mf">2.3</span><span class="p">,</span><span class="mf">2.6</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span><span class="mi">17</span><span class="p">,</span><span class="mi">23</span><span class="p">,</span><span class="mi">27</span><span class="p">,</span><span class="mi">36</span><span class="p">,</span><span class="mi">40</span><span class="p">,</span><span class="mi">45</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dydx</span> <span class="o">=</span> <span class="n">Hyperplume</span><span class="o">.</span><span class="n">eta_deriver</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</div></blockquote>
+<p>def plot(self,z,r,var_name,contour_levels):</p>
+<blockquote>
+<div><p>&#8220;&#8221;&#8221; Hyperplume Class method to plot the contours of important plasma variables along the specified (z,r) plume grid points&#8221;&#8220;&#8221;</p>
+<p>Args:</p>
+<blockquote>
+<div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">z (int,float, or np.ndarray):</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">new interpolation axial region where plasma variabes are to be calculated and plotted. Must be inside z_grid limits</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">r (int,float, or np.ndarray):</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">new interpolation axial region where plasma variabes are to be calculated and plotted. Must be inside z_grid limits</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">var_name (str):</th><td class="field-body">string containing the name of the variable to be visualized. Options are:
+&#8216;lnn&#8217;: logarithm of plasma density
+&#8216;u_z&#8217;: axial plume velocity
+&#8216;u_r&#8217;:radial plume velocity
+&#8216;T&#8217;: plasmaTemperature
+&#8216;phi&#8217;:  ambipolar electric field
+&#8216;eta&#8217;: ion stream lines</td>
+</tr>
+</tbody>
+</table>
+<p>contour_levels (array or of list): contour lables of plasma varialbled at the targets z,r points.</p>
+</div></blockquote>
+<dl class="docutils">
+<dt>Usage:</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">Plasma</span> <span class="o">=</span> <span class="n">Hyperplume</span><span class="p">()</span><span class="o">.</span><span class="n">SIMPLE_plasma</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Plume</span> <span class="o">=</span> <span class="n">AEM</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Plume</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">z</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">15</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">25</span><span class="p">,</span><span class="mi">30</span><span class="p">]),</span><span class="n">r</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">20</span><span class="p">,</span><span class="mi">25</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="mi">35</span><span class="p">]),</span>
+<span class="go">    var_name=&#39;n&#39;,contour_levels=[0,1,2,3,4,5,6,7,8])</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</div></blockquote>
+</div></blockquote>
+</div>
+<div class="section" id="ssm-class">
+<h2>SSM Class<a class="headerlink" href="#ssm-class" title="Permalink to this headline">¶</a></h2>
+<p>class SSM(Hyperplume):</p>
+<blockquote>
+<div><p>&#8220;&#8221;&#8220;Self Similar model of a plasma plume expansion.Class SSM inherits methods __init__,solver
+and query from parent class Hyperplume, and particularizes them.&#8221;&#8220;&#8221;</p>
+<p>def __init__(self,plasma,M_0,d_0,z_span,r_span,n_init):</p>
+<blockquote>
+<div><p>&#8220;&#8221;&#8220;Constructor __init__ loads and initialises the main class attributes.
+Calls parent class Hyperplume constructor method __init__ to store main plasma properties as attributes in the class.&#8221;&#8220;&#8221;</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">plasma (dict):</th><td class="field-body">simple_plasma object dictionary containing basic plasma parameters.</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">z_span (numpy.ndarray):</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">axial region where the problem will be integrated.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">r_span (numpy.ndarray):</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">initial far-field plasma radial profile.</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">n_init (numpy.ndarray):</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">initial dimensional density front.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">M_0 (float):</th><td class="field-body">Plasma Mach number at (z,r) = (0,0)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">d_0 (float):</th><td class="field-body">Tangent of initial plume divergence angle</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt>Implementation:</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">e_charge</span><span class="p">,</span><span class="n">ion_mass</span> <span class="o">=</span><span class="mf">1.6e-19</span><span class="p">,</span><span class="mf">2.1801714e-25</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Plasma_temp</span><span class="p">,</span><span class="n">gamma_value</span> <span class="o">=</span> <span class="mf">2.1801714e-19</span><span class="p">,</span><span class="mi">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Plasma</span> <span class="o">=</span> <span class="n">Hyperplume</span><span class="p">()</span><span class="o">.</span><span class="n">simple_plasma</span><span class="p">(</span><span class="n">e_charge</span><span class="p">,</span><span class="n">ion_mass</span><span class="p">,</span>
+<span class="go">    Plasma_temp,gamma_value)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">z_span</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">110</span><span class="p">,</span><span class="mi">5000</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">r_0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">5000</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">n0</span> <span class="o">=</span>  <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mf">6.15</span><span class="o">/</span><span class="mi">2</span> <span class="o">*</span> <span class="n">r_0</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">M0</span><span class="p">,</span><span class="n">d0</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span><span class="mf">0.2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Plume</span> <span class="o">=</span> <span class="n">SSM</span><span class="p">(</span><span class="n">Plasma</span><span class="p">,</span><span class="n">M0</span><span class="p">,</span><span class="n">d0</span><span class="p">,</span><span class="n">z_span</span><span class="p">,</span><span class="n">r_0</span><span class="p">,</span><span class="n">n0</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</div></blockquote>
+<p>def solver(self):</p>
+<blockquote>
+<div><p>&#8220;&#8221;&#8220;Solver method solves for model constriants C and h, as well as  the initial dimensionless axial velocity vector upsilon
+and initial dimensionless density profile nu, using SSM model equations. It then saves this plume variables as as class attributes,
+in the form of interpolation libraries over the entire plume grid.</p>
+<p>Solver method is a particularization of the abstrac Hyperplume.solver() method &#8220;&#8221;&#8220;</p>
+<p>Implementation:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">Plume</span><span class="o">.</span><span class="n">solver</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>&#8220;&#8221;&#8220;Important variables in solver method&#8221;&#8220;&#8221;</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">C (float):</th><td class="field-body">SSM model separation constraint</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">h_interp (function):</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">SSM dilation function interpolation library</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">dh_interp (function):</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">Derivative of SSM dilation function h</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">nu_interp (function):</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">Dimensionless plasma density function</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">nu_prime_interp (function):</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">Derivative of Dimensionless plasma density function</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">upsilon_interp (function):</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">Dimensionless plume axial velocity interpolation library</td>
+</tr>
+</tbody>
+</table>
+<p>&#8220;&#8221;&#8220;To access the interpolation libraries and SSM constraints particularly:&#8221;&#8220;&#8221;</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">Plume</span><span class="o">.</span><span class="n">C</span><span class="p">,</span><span class="n">Plume</span><span class="o">.</span><span class="n">h</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">eta_target</span> <span class="o">=</span> <span class="mf">0.8</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Plume</span><span class="o">.</span><span class="n">nu_interp</span><span class="p">(</span><span class="n">eta_target</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Plume</span><span class="o">.</span><span class="n">upsilon_interp</span><span class="p">(</span><span class="n">eta_target</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>def dh_fun(h,Z):</p>
+<blockquote>
+<div><p>&#8220;&#8221;&#8220;dh_fun function calculates the derivative of the self-similar dilation function h(z),
+and saves the results as a class attribute in column-array format &#8220;&#8221;&#8220;</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">h (numpy.ndarray):</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">SSM model scaling function</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Z (numpy.ndarray):</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">axial span for integration. Coincidet with initial axial span loaded in SSS
+class constructor,for accruacy and correctness)</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt>Returns:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">dh (numpy.ndarray):</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">derivative of SSM scaling function</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</div></blockquote>
+</div></blockquote>
+<p>def query(self,z,r):</p>
+<blockquote>
+<div><p>&#8220;&#8221;&#8221; Method query returns the density, velocity profile, temperature, the electric potential and SSM error at
+particular (z,r) points by interpolation over the Plume grid.
+SSM method query is a particulatization of the abstract Hyperplume method Hyperplume.query()&#8221;&#8220;&#8221;</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">z (int,numpy.ndarray):</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">axial target points where plasma variables are retrieved. Single points, arrays of locations and meshgrids are valid.</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">r (int,numpy.ndarray):</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">axial target points where plasma variables are retrieved. Single points, arrays of locations and meshgrids are valid.</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt>Returns:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">lnn (int,numpy.ndarray):</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">logarithmic plasma density at specified (z,r) points in plume grid</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">u_z (int,numpy.ndarray):</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">plasma axial velocity at specified (z,r) points in plume grid</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">u_r (int,numpy.ndarray):</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">plasma radial velocity at specified (z,r) points in plume grid</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">T (int,numpy.ndarray):</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">plasma temperature at specified (z,r) points in plume grid</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">phi (int,numpy.ndarray):</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">plasma ambipolar electric potential at specified (z,r) points in plume grid</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">error (int,numpy.ndarray):</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">SSM error created by imposing model constraints at specified (z,r) points in plume grid</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">eta (int,numpy.ndarray):</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">ion current stream lines at specified (z,r) points in plume grid</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt>Usage:</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">z</span><span class="p">,</span><span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">100</span><span class="p">,</span><span class="mi">50</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">50</span><span class="p">,</span><span class="mi">40</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lnn</span><span class="p">,</span><span class="n">u_z</span><span class="p">,</span><span class="n">u_r</span><span class="p">,</span><span class="n">T</span><span class="p">,</span><span class="n">phi</span><span class="p">,</span><span class="n">error</span><span class="p">,</span><span class="n">eta</span><span class="o">=</span><span class="n">Plume</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">z</span><span class="p">,</span><span class="n">r</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</div></blockquote>
+<p>def type_parks(plasma,M_0,d_0,z_span,r_0,C):</p>
+<blockquote>
+<div><blockquote>
+<div><p>&#8220;&#8221;&#8221; type_parks functions allow the user to generate default plume density profiles based on the theoretical
+Parks plume model. The function creates the initial density profile following
+the theoretical model, and creates a SSM Plume object with unique characteristics&#8221;&#8220;&#8221;</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">plasma (dict):</th><td class="field-body"><p class="first">Hyperplume&#8217;s simple_plasma object, or otherwise a similar plasma dictionary containing basic parameters.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">z_span (numpy.ndarray):</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body"><p class="first">axial region where the problem will be integrated.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">r_0 (numpy.ndarray):</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><p class="first">initial far-field plasma radial profile.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">M_0 (float):</th><td class="field-body"><p class="first">Plasma Mach number at (z,r) = (0,0)</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">d_0 (float):</th><td class="field-body"><p class="first">Tangent of initial plume divergence angle</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">C (float):</th><td class="field-body"><p class="first">SSM model constraint. C is a separation constant used for scaling the Self-Similarity plume proble.
+C is used to determine the initial density profile derived by Parks.
+In particular:</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li>n_parks = np.exp(-C*r_0**2 /2)</li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Plume (object):</th><td class="field-body">SSM Plume object preloaded and solved with Parks theoretical density and axial velocity models.</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt>Usage:</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">Plasma</span> <span class="o">=</span> <span class="n">Hyperplume</span><span class="p">()</span><span class="o">.</span><span class="n">simple_plasma</span><span class="p">(</span><span class="n">e_charge</span><span class="p">,</span><span class="n">ion_mass</span><span class="p">,</span>
+<span class="go">    Plasma_temp,gamma_value)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">z_span</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">110</span><span class="p">,</span><span class="mi">5000</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">r_0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">5000</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">C</span> <span class="o">=</span> <span class="mf">6.15</span>
+<span class="go">&gt;&gt;&gt;Plume_parks = type_parks(Plasma,z_span,r_0,C)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lnn</span><span class="p">,</span><span class="n">u_z_</span><span class="p">,</span><span class="n">u_r</span><span class="p">,</span><span class="n">T</span><span class="p">,</span><span class="n">phi</span><span class="p">,</span><span class="n">error</span><span class="p">,</span><span class="n">eta</span><span class="o">=</span><span class="n">Plume_parks</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">z</span><span class="p">,</span><span class="n">r</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</div></blockquote>
+<p>def type_korsun(plasma,M_0,d_0,Z_span,r_0,C):</p>
+<blockquote>
+<div><blockquote>
+<div><p>&#8220;&#8221;&#8221; type_parks functions allow the user to generate default plume density profiles based on the theoretical
+Korsun plume model. The function creates the initial density profile following
+the theoretical model, and creates a SSM Plume object with unique characteristics&#8221;&#8220;&#8221;</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">plasma (dict):</th><td class="field-body"><p class="first">Hyperplume&#8217;s simple_plasma object, or otherwise a similar plasma dictionary containing basic parameters.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">z_span (numpy.ndarray):</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body"><p class="first">axial region where the problem will be integrated.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">r_0 (numpy.ndarray):</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><p class="first">initial far-field plasma radial profile.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">M_0 (float):</th><td class="field-body"><p class="first">Plasma Mach number at (z,r) = (0,0)</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">d_0 (float):</th><td class="field-body"><p class="first">Tangent of initial plume divergence angle</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">C (float):</th><td class="field-body"><p class="first">SSM model constraint. C is a separation constant used for scaling the Self-Similarity plume problem.
+C is used to determine the initial density and axial velocity profiles derived by Korsun.
+In particular:</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li>n_parks = 1 / (1 + C / 2 * r_0**2 )</li>
+<li>upsilon_parks = (1 + C / 2 * r_0**2 )**(gamma/2)</li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Plume (object):</th><td class="field-body">SSM Plume object preloaded and solved with Parks theoretical density and axial velocity models.</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt>Usage:</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">Plasma</span> <span class="o">=</span> <span class="n">Hyperplume</span><span class="p">()</span><span class="o">.</span><span class="n">simple_plasma</span><span class="p">(</span><span class="n">e_charge</span><span class="p">,</span><span class="n">ion_mass</span><span class="p">,</span>
+<span class="go">    Plasma_temp,gamma_value)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">z_span</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">110</span><span class="p">,</span><span class="mi">5000</span><span class="p">)</span> <span class="c"># Axial plume grid for integration</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">r_0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">5000</span><span class="p">)</span> <span class="c">#Initial plume radial profile</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">C</span> <span class="o">=</span> <span class="mf">6.15</span>
+<span class="go">&gt;&gt;&gt;Plume_korsun = type_korsun(Plasma,z_span,r_0,C)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lnn</span><span class="p">,</span><span class="n">u_z_</span><span class="p">,</span><span class="n">u_r</span><span class="p">,</span><span class="n">T</span><span class="p">,</span><span class="n">phi</span><span class="p">,</span><span class="n">error</span><span class="p">,</span><span class="n">eta</span><span class="o">=</span><span class="n">Plume_korsun</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">z</span><span class="p">,</span><span class="n">r</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</div></blockquote>
+<p>def type_ashkenazy(plasma,M_0,d_0,Z_span,r_0,C):</p>
+<blockquote>
+<div><blockquote>
+<div><p>&#8220;&#8221;&#8221; type_ashkenazy functions allow the user to generate default plume density profiles based on the theoretical
+ashkenazy plume model. The function creates the initial density profile following
+the theoretical model, and creates a SSM Plume object with unique characteristics&#8221;&#8220;&#8221;</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">plasma (dict):</th><td class="field-body"><p class="first">Hyperplume&#8217;s simple_plasma object, or otherwise a similar plasma dictionary containing basic parameters.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">z_span (numpy.ndarray):</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body"><p class="first">axial region where the problem will be integrated.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">r_0 (numpy.ndarray):</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><p class="first">initial far-field plasma radial profile.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">M_0 (float):</th><td class="field-body"><p class="first">Plasma Mach number at (z,r) = (0,0)</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">d_0 (float):</th><td class="field-body"><p class="first">Tangent of initial plume divergence angle</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">C (float):</th><td class="field-body"><p class="first">SSM model constraint. C is a separation constant used for scaling the Self-Similarity plume problem.
+C is used to determine the initial density profile derived by Ashkenazy.
+In particular:</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li>n_parks = (1 + k*r_0**2)**(-C/(2*k))</li>
+<li>upsilon_parks = (1 + k*r_0**2)**(-1/2), where k = d_0**2</li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Plume (object):</th><td class="field-body">SSM Plume object preloaded and solved with Parks theoretical density and axial velocity models.</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt>Usage:</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">Plasma</span> <span class="o">=</span> <span class="n">Hyperplume</span><span class="p">()</span><span class="o">.</span><span class="n">simple_plasma</span><span class="p">(</span><span class="n">e_charge</span><span class="p">,</span><span class="n">ion_mass</span><span class="p">,</span>
+<span class="go">    Plasma_temp,gamma_value)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">z_span</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">110</span><span class="p">,</span><span class="mi">5000</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">r_0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">5000</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">C</span> <span class="o">=</span> <span class="mf">6.15</span>
+<span class="go">&gt;&gt;&gt;Plume_ashk = type_ashkenazy(Plasma,z_span,r_0,C)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lnn</span><span class="p">,</span><span class="n">u_z_</span><span class="p">,</span><span class="n">u_r</span><span class="p">,</span><span class="n">T</span><span class="p">,</span><span class="n">phi</span><span class="p">,</span><span class="n">error</span><span class="p">,</span><span class="n">eta</span><span class="o">=</span><span class="n">Plume_ashk</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">z</span><span class="p">,</span><span class="n">r</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</div></blockquote>
+</div></blockquote>
+</div>
+<div class="section" id="aem-class">
+<h2>AEM Class<a class="headerlink" href="#aem-class" title="Permalink to this headline">¶</a></h2>
+<p>class AEM(Hyperplume):</p>
+<blockquote>
+<div><p>&#8220;&#8221;&#8220;Asymptotic Expansion Model of a plasma plume expansion.Class AEM inherits methods  from
+parent class Hyperplume, and particularizes them.All initial inputs must be given in dimensional form.&#8221;&#8220;&#8221;</p>
+<p>def __init__(self,plasma,z_span,r_span,n_init,uz_init,ur_init,sol_order):</p>
+<blockquote>
+<div><p>&#8220;&#8221;&#8221; Class method __init__ is used as class constructor. Calls parent class Hyperplume constructor method __init__ to
+store main plasma properties as attributes in the class.&#8221;&#8220;&#8221;</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">plasma (dict):</th><td class="field-body">simple_plasma object dictionary containing basic plasma parameters.</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">z_span (numpy.ndarray):</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">axial region where the problem will be integrated.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">r_span (numpy.ndarray):</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">initial far-field plasma radial profile.</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">n_init (numpy.ndarray):</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">initial far-field plum density front.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">uz_init (numpy.ndarray):</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">initial far-region plume axial velocity profile</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">ur_init (numpy.ndarray):</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">initial fr-region plume radial velocity profile</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">sol_order (int):</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">Integer defining the AEM correction order for the plume integration.
+-0: AEM &#8220;cold beam&#8221; zeroth order solution
+-1: AEM first order correction
+-2: Second Order Correction</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt>Usage:</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">e_charge</span><span class="p">,</span><span class="n">ion_mass</span> <span class="o">=</span> <span class="mf">1.6e-19</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Plasma_temp</span><span class="p">,</span><span class="n">gamma_value</span><span class="o">=</span> <span class="mf">2.1801714e-25</span><span class="p">,</span><span class="mf">2.1801714e-19</span><span class="p">,</span><span class="mi">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Plasma</span> <span class="o">=</span> <span class="n">Hyperplume</span><span class="p">()</span><span class="o">.</span><span class="n">simple_plasma</span><span class="p">(</span><span class="n">e_charge</span><span class="p">,</span><span class="n">ion_mass</span><span class="p">,</span>
+<span class="go">    Plasma_temp,gamma_value)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">z_span</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">110</span><span class="p">,</span><span class="mi">5000</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">r_0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">5000</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">n0</span> <span class="o">=</span>  <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mf">6.15</span><span class="o">/</span><span class="mi">2</span> <span class="o">*</span> <span class="n">r_0</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">uz0</span><span class="p">,</span><span class="n">ur0</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">20000</span><span class="p">,</span><span class="mi">20000</span><span class="p">,</span><span class="mi">100</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">40000</span><span class="p">,</span><span class="mi">100</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">AEM_Order</span> <span class="o">=</span> <span class="mi">2</span> <span class="c"># AEM model solution</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">PlumeAEM</span> <span class="o">=</span> <span class="n">AEM</span><span class="p">(</span><span class="n">Plasma</span><span class="p">,</span><span class="n">z_span</span><span class="p">,</span><span class="n">eta_0</span><span class="p">,</span><span class="n">n0</span><span class="p">,</span><span class="n">uz0</span><span class="p">,</span><span class="n">ur0</span><span class="p">,</span><span class="n">AEM_Order</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+<dt>&#8220;&#8221;&#8220;Other important class attributes loaded in the AEM constructor are:&#8221;&#8220;&#8221;</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">d0 (numpy.ndarray):</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">far field initial divergence ur0/uz0.</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">d0p (numpy.ndarray):</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">derivative of plume initial divergence</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">eps (float):</th><td class="field-body">AEM expansion parameter 1/M_{0}^{2}</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">uz0p (numpy.ndarray):</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">derivative of initial far region axial velocity</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">duz0p (numpy.ndarray):</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">derivative of initial far region radial velocity</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">z_grid,r_grid (numpy.ndarray):</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">Plume grids where AEM problem is integrated</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt>To access these attributes, for instance:</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">PlumeAEM</span><span class="o">.</span><span class="n">d0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">PlumeAEM</span><span class="o">.</span><span class="n">eps</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</div></blockquote>
+</div></blockquote>
+<p>def solver(self):</p>
+<blockquote>
+<div><p>&#8220;&#8221;&#8221; Class method Solver integrates the AEM model equations in the specified plume grid. The method stores the different order
+plasma properties in matrixes of size (mxn), where m,n are the number of z,r points,respectively.Porperties such as
+density,temperature,electric field,etc are calculated and saved as attributes of the class in this matrix form.&#8221;&#8220;&#8221;</p>
+<dl class="docutils">
+<dt>Usage:</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">PlumeAEM</span> <span class="o">=</span> <span class="n">AEM</span><span class="p">(</span><span class="n">Plasma</span><span class="p">,</span><span class="n">z_span</span><span class="p">,</span><span class="n">eta_0</span><span class="p">,</span><span class="n">n0</span><span class="p">,</span><span class="n">uz0</span><span class="p">,</span><span class="n">ur0</span><span class="p">,</span><span class="n">AEM_Order</span><span class="p">)</span> <span class="c">#Creation of AEM plume</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">PlumeAEM</span><span class="o">.</span><span class="n">solver</span><span class="p">()</span> <span class="c"># be sure to create a valid AEM plasma plume before applying the plume solver method</span>
+</pre></div>
+</div>
+</dd>
+<dt>&#8220;&#8221;&#8220;Main Plume properties solved and saved by the method as class attributes:&#8221;&#8220;&#8221;</dt>
+<dd><table class="first docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">lnn (numpy.ndarray):</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">3-D matrix containing density values (logarithmic) for the three possible AEM solution orders.</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">uz (numpy.ndarray):</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">3-D matrix containing axial velocity values for the three possible AEM solution orders.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">ur (numpy.ndarray):</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">3-D matrix containing radial velocity values for the three possible AEM solution orders.</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">T (numpy.ndarray):</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">3-D matrix containing plasma Temperature values for the three possible AEM solution orders.</td>
+</tr>
+</tbody>
+</table>
+<p>:phi (numpy.ndarray):3-D matrix containing plasma ambipolar electric field for the three possible AEM solution orders.
+:div (numpy.ndarray): 3-D matrix containing plume divergence values for the three possible AEM solution orders.
+:<a href="#id1"><span class="problematic" id="id2">eta_</span></a> (int,numpy.ndarray): 3-D matrix containing ion current streamlines for the three possible AEM solution orders.</p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">PlumeAEM</span><span class="o">.</span><span class="n">lnn</span><span class="p">[</span><span class="mi">0</span><span class="p">,:,:]</span> <span class="c"># density values for Zeroth Order AEM</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">PlumeAEM</span><span class="o">.</span><span class="n">uz</span><span class="p">[</span><span class="mi">1</span><span class="p">,:,:]</span> <span class="c"># axial velocity First Order AEM</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">PlumeAEM</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="mi">2</span><span class="p">,:,:]</span> <span class="c"># Temperature values for Second Order AEM</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</div></blockquote>
+<p>def marching_solver(self,nsects):</p>
+<blockquote>
+<div><p>&#8220;&#8221;&#8220;Marching schem AEM plume solver.AEM Class method marching_solver solves extends the AEM solution downstream by
+reinitializing the method at each new calculated plasma plume front, (r0_front,z0_front,uz0_front,n0_front)
+preventing excessive error growth in the calculations and widening the convergence region of thr AEM model.</p>
+<p>Marching_solver method reinitializes the plume initial parameter, with the values calculated in the previous
+integration step, as many times as indicated by the user in nsects. It then solves the plume expansion incrementally
+by callling the solver method multiple times.&#8221;&#8220;&#8221;</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">nsects (int):</th><td class="field-body">number of axial sections or steps (plume fronts), where solver reinitializes the
+model and integrates the solution agin.</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt>Usage:</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">PlumeAEM</span> <span class="o">=</span> <span class="n">AEM</span><span class="p">(</span><span class="n">Plasma</span><span class="p">,</span><span class="n">z_span</span><span class="p">,</span><span class="n">eta_0</span><span class="p">,</span><span class="n">n0</span><span class="p">,</span><span class="n">uz0</span><span class="p">,</span><span class="n">ur0</span><span class="p">,</span><span class="n">AEM_Order</span><span class="p">)</span> <span class="c">#Creation of AEM plume</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Plume</span><span class="o">.</span><span class="n">marching_solver</span><span class="p">(</span><span class="n">nsects</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>&#8220;&#8221;&#8220;Same Plasma attributes from standard solver can be accessed in Method marching_solver, but in this case the method stores only the
+ith higher order correction specified by the user at plume creation with the input argument sol_order:&#8221;&#8220;&#8221;</p>
+<blockquote>
+<div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">lnn (numpy.ndarray):</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">matrix containing density values (logarithmic) for the selected AEM solution order.</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">uz (numpy.ndarray):</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">matrix containing axial velocity values for the selected AEM solution order.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">ur (numpy.ndarray):</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">matrix containing radial velocity values for the selected AEM solution order.</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">T (numpy.ndarray):</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">matrix containing plasma Temperature values for the selected AEM solution order.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">phi (numpy.ndarray):</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">matrix containing plasma ambipolar electric field for the selected AEM solution order.</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">div (numpy.ndarray):</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">matrix containing plume divergence values for the selected AEM solution order.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">PlumeAEM</span><span class="o">.</span><span class="n">lnn</span> <span class="c"># density values for AEM ith order solution of plume expansion in the grid</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">PlumeAEM</span><span class="o">.</span><span class="n">uz</span> <span class="c"># axial velocity for AEM ith order solution</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">PlumeAEM</span><span class="o">.</span><span class="n">T</span> <span class="c"># Temperature values for AEM ith order solution</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div></blockquote>
+<p>def query(self,z,r):</p>
+<blockquote>
+<div><p>&#8220;&#8221;&#8221; Method query returns the density, velocity profile, temperature, the electric potential at
+particular (z,r) points in the Plume.</p>
+<p>These plasma properties are interpolated along the previously calculated 2D grids z_grid and r_grid
+at targeted (z,r) points specified by the user. User must always check if np.max(r) &gt; np.max(self.r_grid),
+np.max(z) &gt; np.max(self.z_grid) in their query point set,to avoid extrapolation results.&#8221;&#8220;&#8221;</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">z (float,numpy.ndarray):</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">new interpolation z points.</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">r (float,numpy.ndarray):</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">new interpolation r points.</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt>Outputs:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">lnn (int,numpy.ndarray):</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">logarithmic plasma density at specified (z,r) points in plume grid</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">u_z (int,numpy.ndarray):</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">plasma axial velocity at specified (z,r) points in plume grid</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">u_r (int,numpy.ndarray):</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">plasma radial velocity at specified (z,r) points in plume grid</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">T (int,numpy.ndarray):</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">plasma temperature at specified (z,r) points in plume grid</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">phi (int,numpy.ndarray):</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">plasma ambipolar electric potential at specified (z,r) points in plume grid</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">eta (int,numpy.ndarray):</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">ion current stream lines at specified (z,r) points in plume grid</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt>Usage:</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">z</span><span class="p">,</span><span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">100</span><span class="p">,</span><span class="mi">50</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">50</span><span class="p">,</span><span class="mi">40</span><span class="p">)</span> <span class="c">#target (z,r) for plume query</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lnn</span><span class="p">,</span><span class="n">u_z</span><span class="p">,</span><span class="n">u_r</span><span class="p">,</span><span class="n">T</span><span class="p">,</span><span class="n">phi</span><span class="p">,</span><span class="n">eta</span><span class="o">=</span><span class="n">PlumeAEM</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">z</span><span class="p">,</span><span class="n">r</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</div></blockquote>
+<p>def grid_setup(self,zpts,epts):</p>
+<blockquote>
+<div><p>&#8220;&#8221;&#8221; grid_setup creates an strctured grid of z,r points where the AEM problem will be integrated &#8220;&#8221;&#8220;</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">zpts (int):</th><td class="field-body">number of axial points in the structure. Indicates legnth oof axial plume span</td>
+</tr>
+<tr class="field-even field"><th class="field-name">epts (int):</th><td class="field-body">number of radial points in the structure. Indicates legnth of radial plume span</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt>Returns:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">z_grid (numpy.ndarray):</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">2D matrix containing axial grid points for model integration</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">r_grid (numpy.ndarray):</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">2D matrix containing radial grid points for model integration</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt>Usage:</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">z_grid</span><span class="p">,</span><span class="n">r_grid</span> <span class="o">=</span> <span class="n">PlumeAEM</span><span class="o">.</span><span class="n">grid_setup</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span><span class="mi">50</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</div></blockquote>
+<p>def val_domain(self):</p>
+<blockquote>
+<div><p>&#8220;&#8221;&#8220;val_domain class method evaluates the validity of the AEM series expansion  solution
+at z_grid and r_grid points in the plume. Validity results for each AEM order
+are stored  in the 3D matrix Plume.val. These matrix is filled with values indicating a specific validity condition
+in the results.</p>
+<dl class="docutils">
+<dt>Validity Values</dt>
+<dd><ul class="first last simple">
+<li>0 - Not valid for both velocity and density</li>
+<li>1 - Valid only for velocity</li>
+<li>-1 - Valid only for density</li>
+<li>2 - Valid for both velocity and density</li>
+</ul>
+</dd>
+</dl>
+<p>&#8220;&#8221;&#8220;</p>
+<dl class="docutils">
+<dt>Usage:</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">PlumeAEM</span><span class="o">.</span><span class="n">val_domain</span><span class="p">()</span> <span class="c">#Intialize validity condition study</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">Plume</span><span class="o">.</span><span class="n">val</span><span class="p">)</span> <span class="c">#See results of validation</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</div></blockquote>
+<p>def partial_derivs(self,var,type2):</p>
+<blockquote>
+<div><blockquote>
+<div><p>&#8220;&#8221;&#8220;Class method partial_derivs computes the partial derivatives of plasma variables with respect to
+the physical z,r at the plume grid points.&#8221;&#8220;&#8221;</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">var (numpy.ndarray):</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><p class="first">Variable values to derive at z,r grid points</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">type2 (int):</th><td class="field-body"><p class="first">Integer defining the behaviour of the derivative at the borders and therefore the Type of varible to be differentiated.</p>
+<ul class="last simple">
+<li>0: Symmetric function. Border derivative value is set to 0</li>
+<li>-1: Anti-symmetric function. Forward finite difference is used for border derivative calculation.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">dvar_dz (numpy.ndarray):</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">z-partial derivative values of input argument var at the grid points</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">dvar_dr (numpy.ndarray):</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">r-partial derivative values of input argument var at the grid points</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt>Usage:</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">dlnn0_dz</span><span class="p">,</span><span class="n">dlnn0dr</span> <span class="o">=</span> <span class="n">PlumeAEM</span><span class="o">.</span><span class="n">partial_derivs</span><span class="p">(</span><span class="n">Plume</span><span class="o">.</span><span class="n">lnn_0</span><span class="p">)</span> <span class="c">#derivative of Zeroth order density correction</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</div></blockquote>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Code Documentation</a><ul>
+<li><a class="reference internal" href="#hyperplume-class">Hyperplume class</a></li>
+<li><a class="reference internal" href="#ssm-class">SSM Class</a></li>
+<li><a class="reference internal" href="#aem-class">AEM Class</a></li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/tets.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="index.html">HyperPlume 1.0.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2017, Pablo Moreno.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,290 @@
+Understanding Plume Expansions
+==============================
+
+Introduction to Electric Propulsion and Plasma Plumes
+-----------------------------------------------------
+
+Spacecraft propulsion is any method used to accelerate spacecraft and artificial satellites. Rocket or spacecraft propulsion systems are often classified according to the type of energy source backing its operation and we 
+commonly distinguish between chemical, and electrical propulsion systems. We will focus here on the characteristics of electrical propulsion, to later address the problem of plasma plumes deriving from this type of spacecraft 
+propulsion.
+
+But first, it is important to recall the definition of thrust and Specific Impulse in space propulsion systems since these two control parameters are clearly identifiable in electric propulsion systems. Thrust is the 
+force produced by a rocket propulsion system acting upon, the reaction experienced by its structure due to the ejection of matter at high velocity. Roughly speaking, Thrust due to change in  momentum is expressed as:
+
+.. figure:: Thrust.PNG
+   :scale: 90 %
+   :alt: Schematics of Far-Region Plume
+   :align: center
+
+In the previous equation, $v_{2}$ is the  effective exhaust velocity and accounts for any pressure contribution effects to thrust $F$. In addition, $I_{sp}$ is the specific impulse of the exhaust propellant defined as
+the total impulse of the rocket propulsion system $I_{t}$, per unit weight of propellant:
+
+.. figure:: Isp.PNG
+   :scale: 90 %
+   :alt: Schematics of Far-Region Plume
+   :align: center
+
+Electric thrusters are typically preferred because they require much less propellant than chemical rockets and have a higher exhaust speed (operate at a higher specific impulse) than chemical rockets. Due to limited electric power 
+the thrust is much weaker compared to chemical rockets, but electric propulsion can provide a small thrust for a long time. Therefore, electric propulsion can achieve high speeds over long periods and works better than 
+chemical rockets in some applications like deep space missions, GEO orbit transfer, etc. However, the technology behind electrical propuslion systems (or electric thrusters) which is otherwise proven to be reliable and offers higher specific impulse with lower costs, 
+is still in need of lesser-known performance analysis and corrections. The investigation of the plasma plume expelled from the thruster and its effects over the surrounding elements in the spacraft is one of such areas of development 
+in electric propulsion. 
+
+The plasma plume is the high energy ionized gas propelllant expelled from electric thrusters at high divergence angles and velocities. The expansion of the plasma plume outside the thruster is a field of continuous study, primarily due to the potential problems of plume 
+divergence on the spacecraft. Concisely, higher plume divergence leads to greater propulsive losses, as part of the impulse is directed radially rather than axially. Besides, the impact of the high energy particles immersed inside the plasma, with surrounding structural 
+components in the spacecraft such as solar arrays, is more likely to occur when the plume divergence increases. The erosion and contamination of impacted surfaces that follows, known as sputtering, severely reduces satellite life. Finally, there exists high risk of electric 
+arc discharging between equipment in the spacecraft at different electric potential, in the presence of the conducting plasma in the plume. Thus, the need of exploring the physical effects of plasma plume expansions in detail. Moreover, innovative applications regarding 
+plasma plume expansion exploitation in areas like space debris mitigation, have emerged due to the the vast and booming amount of old and defunct man-made satellite waste in LEO (Low earth orbits) and GEO (Geostationary Earth Orbits) around the earth. Precisely, the Ion Beam Shepherd 
+concept takes advantage of plasma plume radial and axial expansion at high energy and velocity to safely reposition space debris to lower and empty orbits. 
+
+Plams plumes are commonly investigated dividing the expansion under two areas, the Near-Region and Far-Field expansion  domains. The physical phenomena driving the expansion process is substantially different between the two areas: near-plume region diagnosis is tested in-flight, in 
+laboratory experiments or otherwise using advanced numerical tools able of tracking the numerous physical complexities, such as advance Particle-In-Cell codes; the far-region plume is on the contrary investigated with simpler two fluid models backed upon semi-analytical approximations 
+such as the Self-Similarity plasma plume models (SSM). Quickly stating, the plasma the near-region plume expansion is highly non-homogeneous and dominated by 3D effects such as the neutralizer electron flux, the potential well outside a Gridded Ion Thruster or the magnetic field induced in the Hall Effect thruster.
+On the other hanf, far-field plume expansion is quite simpler.
+
+HyperPlume code is a software tool developed in python which aims to quickly characterize plume expansions in the far-field domain. The objective of the following sections is therefore, to quickly summarize the physical effects behind 
+far-region plasma plume expansion and explain the two semi-analytical methods developed in HyperPlume to create, and characterize
+far-region plume expansions.
+
+General physics of Far-Region Plasma Plumes
+---------------------------------------------------
+
+The Far_Region plasma extends from a distance of approximate 0.6-1m outside of the thruster, and is typically collisionless and non-magnetic. 
+
+.. figure:: Schematics_Far_Region.png
+   :scale: 90 %
+   :alt: Schematics of Far-Region Plume
+   :align: center
+   
+   Schematics of Far-Region Plume. The initial plume profiles are depicted at the reference plane O together with the 95% ion current streamline.
+
+The main driving parameters in the plasma are the ion flux, the electron pressure and the am-bipolar electric field. Thus, the steady-state two-fluid model of an axis-symmetric and non-rotating plasma plume, with the above mentioned characteristics, is closed by the following equations:
+
+.. figure:: ModelEquations.PNG
+   :scale: 90 %
+   :alt: Far-Region_model_eq
+   :align: center
+   
+   Far-Region plasma plume two fluid model equations.
+
+The condition of quasy-neutrality in the plasma is stated by means of equation (2.1). This equation is used in lieu of more complex expressions, such as the Poisson Equation in plasmas where length scales are larger than the Debye length (approx 1mm or less).
+In the far region plume expansion, the characteristic length of the problem is in the order of the thruster radii ($\approx 10 cm$) and therefore, the equation of quasy-neutrality remains valid. Moreover, equations \eqref{eq2} and \eqref{eq3} express the conservation of mass 
+for ion and electron species whereas equations \eqref{eq4} to \eqref{eq6} present the conservation of momentum for the same two species, and \eqref{eq7} indicates the presence of non-rotating ions nor electrons in the expansion.
+
+The previous complex equations can be simplified under the following assumptions:
+
+.. figure:: ModelAssumptions.PNG
+   :scale: 90 %
+   :alt: Far-Region_model_as
+   :align: center
+ 
+These approximations neglect in first instance the effects of ion thermal pressure and electron inertia (due to the typical scaling of the plasma plume in the far-region domain), and approximate the electron pressure tensor $\mathcal{P}_{e}$ to a diagonal isotropic tensor:
+With these premises the complexity of the problem is greatly reduced, whereas kinetic theory would be needed for a complete definition of the problem. Additionally, if this model of P_e is introduced in equation \eqref{eq5}, together with the definition of a polytropic law for the electron cooling model,
+
+.. figure:: Schematics_Far_Region.png
+   :scale: 90 %
+   :alt: Schematics of Far-Region Plume
+   :align: center
+
+the plasma potential $\phi$ reduces to:
+
+.. figure:: PlasmaElectricPotential.png
+   :scale: 90 %
+   :alt: ElectricPotential
+   :align: center
+
+It is also important to recall that in non-magnetic plume expansions the differential velocity between ions and electrons is expected to be small is small since the plume is globally current-free. Therefore, in first approximation, the assumption of
+
+.. figure:: DifferentialVelocity.PNG
+   :scale: 90 %
+   :alt: DiffVelocity
+   :align: center
+
+holds, and equations \ref{eq3} can be dropped off from the model. After all these approximations the equations can be expressed optimally in cylindrical coordinates as:
+
+.. figure:: ModelEquationsSimp.PNG
+   :scale: 90 %
+   :alt: Far-region_model_simp
+   :align: center
+
+Finally, the problem is closed with the definition of appropriate bounday conditions. The far-field initial plume density and velocity profiles are expressed as:
+
+.. figure:: InitProfiles.PNG
+   :scale: 90 %
+   :alt: Far-region_model_simp
+   :align: center
+
+Solving these hyperbolic equations is the problem at hand. Two semi-analytical methods are proposed for the task, the Asyptotic Expansion method and the Self-Similar Expansion method. Observe 
+in the previous equations the presence of the Mach number parameter, which exceeds unity in plasma plume expansions. The Mach number is a powerful and important parameter in our model, and determines the 
+solution proposed by both methods as it will be explained hereafter.
+
+Asymptotic Expansion Methods (AEM)
+----------------------------------
+
+The Asymptotic Expansion Method is a semi-analytical approximation method deriving from Perturbation Theory. Perturbation methods and by extension the AEM, rely on the presence of a small, and generally dimensionless parameter in the problem.
+In the case of far-region plasma plume expansions, the small parameter which influences the solution of the model equations is expressed as
+
+.. figure:: Epsilon.PNG
+   :scale: 90 %
+   :alt: AEM_epsilon
+   :align: center
+
+In hypersonic plume expansions, this parameter is obviously small given that the Mach number exceeds unity. Therefore, the AEM solution of the model equations can be generally expressed as a convergent expansion with respect to $\epsilon$, 
+consisting on the unperturbed case (when epsilon tends to zero, or Mach Number is pushed to infinity) and higher order corrections in the following form:
+
+.. figure:: AEMGeneralSolution.PNG
+   :scale: 90 %
+   :alt: AEMexpansions
+   :align: center
+
+The unperturbed solution or cold beam plasma solution returned by AEM occurs by pushing plume Mach Number to infinite. In this manner, the right hand side of equations (2.14) and (2.15) is set to zero, the global effect of the pressure is neglected and 
+the cold plasma density and ion velocity are not coupled in the model equations anymore. The plume parameters depend therefore on the initial far-field plume initial profiles in the following manner:
+
+.. figure:: AEMZerothOrder.PNG
+   :scale: 90 %
+   :alt: AEMZerothOrder
+   :align: center
+
+Higher order corrections can be added to the simpler and less accurate unperturbed solution by expanding the model equations over the parameter epsilon as commented before. Each higher order correction of plume variables can be mathematically with the following
+set of equations:
+
+.. figure:: AEMHigherOrder1.PNG
+   :scale: 90 %
+   :alt: AEMHigher1
+   :align: center
+
+.. figure:: AEMHigherOrder2.PNG
+   :scale: 90 %
+   :alt: AEMHigher2
+   :align: center
+
+.. figure:: AEMHigherOrder3.PNG
+   :scale: 90 %
+   :alt: AEMHigher3
+   :align: center
+
+It is important to mention that every new AEM order correction stands upon all previous order corrections as seen in the previous equations. Adding higher order corrections tunes and refines the AEM plume expansion solution, providing more accurate results. However, the exact 
+non-linear correlation (coupling) between plasma velocity and density in the previous equations makes the AEM solution less traceable and more troublesome to integrate, if further corrections are added.  It must be noted that these corrections are proportional to $\epsilon$ raised to the order power, 
+and since $\epsilon = \frac{1}{M_{0}^2}\ll 1$ for supersonic and hypersonic plasmas, there exists a relation between the increase in accuracy and complexity in the AEM model when adding higher order corrections.
+
+One possible solution  to increase the accuracy of the model, without adding complexity to the model equations (with less higher order corrections) consists in introducing a AEM reinitialization or marching scheme. This marching scheme advances (marches) front by front, 
+recalculating and updating the output plume variables $n,u_{z},u_{r}$,etc based on previous integration step results rather than expanding the solution downstream over the initially provided $n_{0},u_{z0},u_{r0}$ fronts. In this way, the integration is sectioned in various s
+teps delimiting axial domains along the plume. Essentially, in this reinitialization version of the AEM, the last $n,u_{r},u_{z}$ plume fronts calculated in a previous plume domain (integration step), are used as initial fronts for the next plume region integration. 
+Hence, the reinitialization technique propagates the plume properties within a narrower axial region of interest avoiding excessive numerical error growth. Conceptually:
+
+.. figure:: AEMMarching1.PNG
+   :scale: 90 %
+   :alt: AEMMarching1
+   :align: center
+
+.. figure:: AEMMarching2.PNG
+   :scale: 90 %
+   :alt: AEMMarching2
+   :align: center
+
+.. figure:: AEMMarching3.PNG
+   :scale: 90 %
+   :alt: AEMMarching3
+   :align:right
+
+Tutorials explaining how to perform plume expansion simulations using the benchmark and marching scheme AEM can be found at the Simulations section.
+
+
+
+Self Similar Expansion Methods (SSM)
+------------------------------------
+
+A simpler approach towards quick and simple plume expansion characterization is the Self-Similar Method. The SSM suggests modeling the plume expansion as a self-similar event, based on experimental measurements that prove the smooth and bell-shaped radial expansion of the plasma plume in the far region.
+The SSM model is more restrictive, and several constraints are imposed in the model. SSM equations are simpler if the general far-field model equations are expressed in dimensionless form with the introduction of the following variables:
+
+.. figure:: SSMDImensionlessVariables.PNG
+   :scale: 90 %
+   :alt: Adimensionalization of plume variables
+   :align: center
+
+
+In these new dimensionless parameters and within self-similarity assumptions, plasma plume ion streamlines as well as density, axial and radial velocities are found with the following equations:
+
+.. figure:: SSMIonStreamlines.PNG
+   :scale: 90 %
+   :alt: SSMeq1
+   :align: center
+
+.. figure:: SSMeq2.PNG
+   :scale: 90 %
+   :alt: SSMeq2
+   :align: center
+
+As stated before, the SSM method introduces several scaling factors like the dilation function h introduced in the previos ion streamline equation, which is a mere dimensioning parameter in our model. In addition, equation (4.4) propose that both 
+plume density and velocity profiles are functions of the initial far-field plume profiles and the scaling functions n_a and u_a, which depict the evolution of the cited varibles along the plume axis.
+If equation (4.4) is introduced in into the general momentum and and continuity plasma equations (equation 2.13 in Section:General Physics of Far-Reion Plasma) the following set of equations relating the SSM unknowns
+n_a, u_a and h is obtained:
+
+.. figure:: SSMEquations.PNG
+   :scale: 90 %
+   :alt: Schematics of Far-Region Plume
+   :align: center
+
+.. figure:: SSMEquations2.PNG
+   :scale: 90 %
+   :alt: Schematics of Far-Region Plume
+   :align: center
+
+
+C is the last separation constant in the model, and equal to
+
+.. figure:: SSMC.PNG
+   :scale: 90 %
+   :alt: Schematics of Far-Region Plume
+   :align: center
+
+for model consistency. Nonetheless, one extra equation besides (4.7) and (4.9) is needed to solve for the three SSM model unknows n_a, u_a and h. The simplest approach is to set u_a = const = 1, an assumption which is valid  when  relative variations in axial velocity are assumed of the order O(1/M_{0}^{2}).
+Under this assumption, the SSM model equations are as simple as:
+
+.. figure:: SSMreduced1.PNG
+   :scale: 90 %
+   :alt: Schematics of Far-Region Plume
+   :align: center
+
+.. figure:: SSMreduced2.PNG
+   :scale: 90 %
+   :alt: Schematics of Far-Region Plume
+   :align: center
+
+The constraints and restrictive equations of the SSM approach led different authors to develop specific far-field plume profiles, that are accurate particularizations of real hypersonic plume expansion processes in space. These models are known by the name of the authors: Parks, Korsun and Ashkenazy.
+Parks proposed the following particular initial plume profiles:
+
+.. figure:: SSMParks.PNG
+   :scale: 90 %
+   :alt: Schematics of Far-Region Plume
+   :align: center
+
+Alternatively, Korsun suggested another set of initial profiles,
+
+.. figure:: SSMKorsun.PNG
+   :scale: 90 %
+   :alt: Schematics of Far-Region Plume
+   :align: center
+
+whereas Ashkenazy recommended the far-region initial fronts to be:
+
+.. figure:: SSMAshk.PNG
+   :scale: 90 %
+   :alt: Schematics of Far-Region Plume
+   :align: center
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

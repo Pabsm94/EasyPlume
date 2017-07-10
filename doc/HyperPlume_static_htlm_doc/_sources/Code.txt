@@ -1,0 +1,38 @@
+Python Plume Code Documentation
+===============================
+
+General structure of Code suite
+---------------------------------
+
+HIPERPLUME parent class and methods
+----------------------------
+
+.. literalinclude:: tets.py	
+   :language: python
+   :start-after: startHyperplume
+   :end-before: end Hyperplume
+
+
+AEM class and methods
+---------------------
+
+.. literalinclude:: tets.py	
+   :language: python
+   :start-after: startAEM
+   :end-before: endAEM
+
+SSM class and methods
+---------------------
+
+.. literalinclude:: tets.py	
+   :language: python
+   :start-after: startSSM
+   :end-before: endSSM
+
+Code testing suite
+------------------
+
+.. literalinclude:: tets.py	
+   :language: python
+   :start-after: startTest
+   :end-before: endTest
