@@ -28,6 +28,6 @@ The HyperPlume Project was developed as part of the final degree dissertation fo
 
 -EP2 website:[![EP2](https://img.shields.io/badge/EP2-HyperPlume-lightgrey.svg)](http://ep2.uc3m.es)
 
--Mario Merino:[![GitHub](https://img.shields.io/badge/GitHub-HyperPlume-yellow.svg)](http://ep2.uc3m.es)
+-Mario Merino:[![GitHub](https://img.shields.io/badge/GitHub-HyperPlume-yellow.svg)](https://github.com/mariomerinomartinez)
 
 HyperPlume is compatible with: __Python 2.7-3.5__.
