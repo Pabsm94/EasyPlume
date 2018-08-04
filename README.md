@@ -18,7 +18,7 @@ semi-analytical plume expansion models:  The Asymptotic Expansion Method and The
 
 Read the full HyperPlume documentation and methodology at: 
 
--Sphinx online documentation:[![Sphinx](https://img.shields.io/badge/Sphinx-HyperPlume-brightgreen.svg)](https://github.com/Pabsm94/HyperPlume/tree/master/doc/HyperPlume_static_htlm_doc/index.html) 
+-Sphinx online documentation:[![Sphinx](https://img.shields.io/badge/Sphinx-HyperPlume-brightgreen.svg)](https://github.com/Pabsm94/HyperPlume/tree/master/doc/HyperPlume_static_htlm_doc) 
 
 -Collisionless Plasma thruster plume expansion model:[![PDF](https://img.shields.io/badge/PDF-HyperPlume-orange.svg)](https://github.com/Pabsm94/HyperPlume/tree/master/doc/Collisionless_Plasma_thruster_plume_expansion_model.pdf) 
 
