@@ -18,8 +18,16 @@ semi-analytical plume expansion models:  The Asymptotic Expansion Method and The
 
 Read the full HyperPlume documentation and methodology at: 
 
--Sphinx online documentation:[![Sphinx](https://img.shields.io/badge/Sphinx-HyperPlume-blue.svg)](https://github.com/Pabsm94/HyperPlume/blob/master/doc/HyperPlume.html) 
+-Sphinx online documentation:[![Sphinx](https://img.shields.io/badge/Sphinx-HyperPlume-blue.svg)](https://github.com/Pabsm94/HyperPlume/tree/master/doc/HyperPlume_static_htlm_doc/index.html) 
 
--Final degree dissertation project: [![PDF](https://img.shields.io/badge/PDF-HyperPlume-blue.svg)](https://github.com/Pabsm94/HyperPlume/blob/master/doc/TFG.pdf)
+-Collisionless Plasma thruster plume expansion model:[![PDF](https://img.shields.io/badge/PDF-HyperPlume-green.svg)](https://github.com/Pabsm94/HyperPlume/tree/master/doc/Collisionless Plasma thruster plume expansion model.pdf) 
+
+-Final degree dissertation project:[![PDF](https://img.shields.io/badge/PDF-HyperPlume-orange.svg)](https://github.com/Pabsm94/HyperPlume/tree/master/doc/TFG_Pablo_Moreno_deSantos.pdf)
+
+The HyperPlume Project was developed as part of the final degree dissertation for the Aerospace Engineering Bachelors held at the Univeristy Charles III of Madrid. The project was made possible thanks to the invaluable help of the EP2 university investigation group and my tutor, Mario Merino Martinez.
+
+-EP2 website:[![EP2](https://img.shields.io/badge/EP2-HyperPlume-lightgrey.svg)](http://ep2.uc3m.es)
+
+-Mario Merino:[![GitHub](https://img.shields.io/badge/GitHub-HyperPlume-yellow.svg)](http://ep2.uc3m.es)
 
 HyperPlume is compatible with: __Python 2.7-3.5__.
